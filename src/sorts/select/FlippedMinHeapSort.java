@@ -28,7 +28,7 @@ final public class FlippedMinHeapSort extends Sort {
         
         this.setSortListName("Flipped Min Heap");
         this.setRunAllSortsName("Flipped Min Heap Sort");
-        this.setRunSortName("Flipped Min Heap Sort");
+        this.setRunSortName("Flipped Reverse Heapsort");
         this.setCategory("Selection Sorts");
         this.setComparisonBased(true);
         this.setBucketSort(false);

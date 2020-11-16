@@ -5,7 +5,6 @@ import panes.JErrorPane;
 import sorts.distribute.AmericanFlagSort;
 import sorts.distribute.CountingSort;
 import sorts.distribute.FlashSort;
-import sorts.distribute.GenericBucketSort;
 import sorts.distribute.GravitySort;
 import sorts.distribute.InPlaceLSDRadixSort;
 import sorts.distribute.IterativeBinaryQuickSort;
@@ -49,7 +48,6 @@ final public class RunDistributionSorts extends MultipleSortThread {
     private Sort PigeonholeSort;
     private Sort GravitySort;
     private Sort AmericanFlagSort;
-    private Sort GenericBucketSort;
     private Sort LSDRadixSort;
     private Sort InPlaceLSDRadixSort;
     private Sort MSDRadixSort;
@@ -62,14 +60,13 @@ final public class RunDistributionSorts extends MultipleSortThread {
     
     public RunDistributionSorts(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
-        this.sortCount = 14;
+        this.sortCount = 13;
         this.categoryCount = this.sortCount;
         
         CountingSort             = new             CountingSort(this.arrayVisualizer);
         PigeonholeSort           = new           PigeonholeSort(this.arrayVisualizer);
         GravitySort              = new              GravitySort(this.arrayVisualizer);
         AmericanFlagSort         = new         AmericanFlagSort(this.arrayVisualizer);
-        GenericBucketSort        = new        GenericBucketSort(this.arrayVisualizer);
         LSDRadixSort             = new             LSDRadixSort(this.arrayVisualizer);
         InPlaceLSDRadixSort      = new      InPlaceLSDRadixSort(this.arrayVisualizer);
         MSDRadixSort             = new             MSDRadixSort(this.arrayVisualizer);
@@ -87,12 +84,11 @@ final public class RunDistributionSorts extends MultipleSortThread {
         RunDistributionSorts.this.runIndividualSort(PigeonholeSort,           0, array, 2048, 1.5,  false);
         RunDistributionSorts.this.runIndividualSort(GravitySort,              0, array, 1024, 0.5,  false);
         RunDistributionSorts.this.runIndividualSort(AmericanFlagSort,       128, array, 2048, 0.75, false);
-        RunDistributionSorts.this.runIndividualSort(GenericBucketSort,       32, array, 2048, 1,    false);
         RunDistributionSorts.this.runIndividualSort(LSDRadixSort,             4, array, 2048, 1.5,  false);
         
-        //Sounds.toggleSofterSounds(true);
+        Sounds.toggleSofterSounds(true);
         RunDistributionSorts.this.runIndividualSort(InPlaceLSDRadixSort,     10, array, 2048, 1,    false);
-        //Sounds.toggleSofterSounds(false);
+        Sounds.toggleSofterSounds(false);
         
         RunDistributionSorts.this.runIndividualSort(MSDRadixSort,             4, array, 2048, 1.25, false);
         RunDistributionSorts.this.runIndividualSort(FlashSort,                0, array, 2048, 1,    false);

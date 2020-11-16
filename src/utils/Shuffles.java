@@ -6,7 +6,6 @@ import main.ArrayVisualizer;
 import sorts.exchange.CircleSort;
 import sorts.hybrid.GrailSort;
 import sorts.select.MaxHeapSort;
-import sorts.select.PoplarHeapSort;
 
 /*
  * 
@@ -48,7 +47,7 @@ public enum Shuffles {
             for(int i = 0; i < currentLen; i++){
                 int randomIndex = (int) (Math.random() * (currentLen - i)) + i;
                 Writes.swap(array, i, randomIndex, 0, true, false);
-                Writes.write(ArrayVisualizer.getShadowArray(), array[i], i, 0, false, false);
+                Writes.write(ArrayVisualizer.getShadowArray(), array[i], i, 0, false, true);
                 
                 if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
             }
@@ -137,10 +136,8 @@ public enum Shuffles {
                 if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
             }
         }
-    },
-    RUNS {
-        @Override
-        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        
+            /*
             int currentLen = ArrayVisualizer.getCurrentLength();
             Writes.write(array, 0, 0, 1, true, false);
             for(int i = 1; i < currentLen; i++) {
@@ -150,7 +147,7 @@ public enum Shuffles {
                 Writes.write(array, i, value, 1, true, false);
             }
         }
-    },
+        */
             
             /*
             int n;
@@ -351,14 +348,11 @@ public enum Shuffles {
             }
         }
         */
-    HEAPIFY {
-            @Override
-            public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
-            	int currentLen = ArrayVisualizer.getCurrentLength();
-            	MaxHeapSort heapSort = new MaxHeapSort(ArrayVisualizer);
-            	heapSort.makeHeap(array, 0, currentLen, 1);
-            }
-    	},
+        
+            /*
+            MaxHeapSort heapSort = new MaxHeapSort(ArrayVisualizer);
+            heapSort.makeHeap(array, 0, currentLen, 1);
+        */
             /*
             for(int i = 0; i < currentLen / 2; i += 2) {
                 Writes.swap(array, i, currentLen - i - 1, 0, true, false);
@@ -366,10 +360,8 @@ public enum Shuffles {
             }
         }
             */
-	POPLARIFY {
-        @Override
-        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
-        	int currentLen = ArrayVisualizer.getCurrentLength();
+            
+            /*
             Writes.changeReversals(1);
             for (int left = 0, right = currentLen - 1; left < right; left++, right--) {
                 // swap the values at the left and right indices
@@ -380,7 +372,7 @@ public enum Shuffles {
             PoplarHeapSort poplarHeapSort = new PoplarHeapSort(ArrayVisualizer);
             poplarHeapSort.poplarHeapify(array, 0, currentLen);
         }
-	},
+        */
             
             /*
             // credit to sam walko/anon
@@ -535,21 +527,18 @@ public enum Shuffles {
                 Writes.swap(array, i, i + (currentLen / 2), 2, true, false);
             }
             */
-	PIPE {
-        @Override
-        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
-        	int currentLen = ArrayVisualizer.getCurrentLength();
-            int value = 1;
+            
+            /*
+            int value = currentLen;
             for(int i = 0; i < currentLen / 2; i++) {
-                Writes.write(array, i, value, 1, true, false);
-                value += 2;
-            }
-            for(int i = currentLen / 2; i < currentLen; i++) {
                 Writes.write(array, i, value, 1, true, false);
                 value -= 2;
             }
-        }
-	},
+            for(int i = currentLen / 2; i < currentLen; i++) {
+                Writes.write(array, i, value, 1, true, false);
+                value += 2;
+            }
+            */
             
             /*
             int j = 0, k = currentLen;
@@ -577,11 +566,9 @@ public enum Shuffles {
             
         }
         */
-	INVPIPE {
-        @Override
-        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
-        	int currentLen = ArrayVisualizer.getCurrentLength();
-        	int value = currentLen;
+    
+        /*
+         * int value = currentLen;
             for(int i = 0; i < currentLen / 2; i++) {
                 Writes.write(array, i, value, 1, true, false);
                 value -= 2;
@@ -590,8 +577,7 @@ public enum Shuffles {
                 Writes.write(array, i, value, 1, true, false);
                 value += 2;
             }
-        }
-	};
+         */
         
         /*
         @Override
@@ -616,6 +602,7 @@ public enum Shuffles {
             }
         }
         */
+    };
 
     public abstract void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes);
 }

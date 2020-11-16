@@ -50,7 +50,7 @@ final public class Delays {
     public Delays(ArrayVisualizer arrayVisualizer) {
         this.arrayVisualizer = arrayVisualizer;
         
-        this.SLEEPRATIO = 1;
+        this.SLEEPRATIO = 1.0;
         this.SKIPPED = false;
         this.addamt = 0;
         
@@ -119,8 +119,8 @@ final public class Delays {
             return;
         }
         
-        this.delay += (millis * (0.75d / this.SLEEPRATIO));
-        this.currentDelay = (millis * (0.75d / this.SLEEPRATIO));
+        this.delay += (millis * (1 / this.SLEEPRATIO));
+        this.currentDelay = (millis * (1 / this.SLEEPRATIO));
         
         this.Sounds.changeNoteDelayAndFilter((int) this.currentDelay);
         
