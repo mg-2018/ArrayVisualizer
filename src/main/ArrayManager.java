@@ -35,7 +35,8 @@ SOFTWARE.
 final public class ArrayManager {
     private int[] presortedArray;
     private utils.Shuffles[] shuffleTypes;
-    private String[] shuffleIDs = {"Randomly", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted"};
+    private String[] shuffleIDs = {"Randomly", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted", "Smaller Runs",
+    		"Max Heapify", "Poplar Heapify", "Pipe Organ", "Inv. Pipe Organ"};
     
     private volatile boolean MUTABLE;
 
