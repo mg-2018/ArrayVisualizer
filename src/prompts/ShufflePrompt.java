@@ -7,10 +7,10 @@ package prompts;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import frames.AppFrame;
 import frames.UtilFrame;
 import main.ArrayManager;
-import templates.Frame;
-import templates.JErrorPane;
+import panes.JErrorPane;
 import utils.Shuffles;
 
 /*
@@ -43,7 +43,7 @@ SOFTWARE.
  *
  * @author S630690
  */
-final public class ShufflePrompt extends javax.swing.JFrame implements Frame {
+final public class ShufflePrompt extends javax.swing.JFrame implements AppFrame {
 
     /**
      * 
@@ -144,25 +144,9 @@ final public class ShufflePrompt extends javax.swing.JFrame implements Frame {
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) throws Exception {//GEN-FIRST:event_jList1ValueChanged
         // TODO add your handling code here:
         int selection = jList1.getSelectedIndex();
-        switch (selection) {
-        case 0:
-            ArrayManager.setShuffle(ArrayManager.getShuffles()[0]);
-            break;
-        case 1:
-            ArrayManager.setShuffle(ArrayManager.getShuffles()[1]);
-            break;
-        case 2:
-            ArrayManager.setShuffle(ArrayManager.getShuffles()[2]);
-            break;
-        case 3:
-            ArrayManager.setShuffle(ArrayManager.getShuffles()[3]);
-            break;
-        case 4:
-            ArrayManager.setShuffle(ArrayManager.getShuffles()[4]);
-            break;
-        default:
-            break;
-        }
+        if(selection >= 0 && selection <= 9)
+        	ArrayManager.setShuffle(ArrayManager.getShuffles()[selection]);
+        
         UtilFrame.jButton6ResetText();
         dispose();
     }//GEN-LAST:event_jList1ValueChanged

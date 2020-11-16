@@ -1,9 +1,6 @@
 package utils;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import main.ArrayVisualizer;
 
@@ -39,7 +36,6 @@ final public class Reads {
     private ArrayVisualizer ArrayVisualizer;
     
     private DecimalFormat formatter;
-    private DecimalFormatSymbols symbols;
     
     private Delays Delays;
     private Highlights Highlights;
@@ -54,11 +50,7 @@ final public class Reads {
         this.Highlights = ArrayVisualizer.getHighlights();
         this.Timer = ArrayVisualizer.getTimer();
         
-        this.formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        this.symbols = this.formatter.getDecimalFormatSymbols();
-        
-        this.symbols.setGroupingSeparator(',');
-        this.formatter.setDecimalFormatSymbols(this.symbols);
+        this.formatter = ArrayVisualizer.getNumberFormat();
     }
     
     public void resetStatistics() {
@@ -69,7 +61,7 @@ final public class Reads {
         this.comparisons++;
     }
     
-    public String displayComparisons() {
+    public String getStats() {
         if(this.comparisons < 0) {
             this.comparisons = Long.MIN_VALUE;
             return "Over " + this.formatter.format(Long.MAX_VALUE);
@@ -88,7 +80,7 @@ final public class Reads {
         this.comparisons = value;
     }
     
-    public int compare(int left, int right) {
+    public int compareValues(int left, int right) {
         this.comparisons++;
         
         int cmpVal = 0;
@@ -104,6 +96,15 @@ final public class Reads {
         return cmpVal;
     }
 
+    public int compareIndices(int[] array, int left, int right, double sleep, boolean mark) {
+        if(mark) {
+            Highlights.markArray(1, left);
+            Highlights.markArray(2, right);
+            Delays.sleep(sleep);
+        }
+        return this.compareValues(array[left], array[right]);
+    }
+    
     public int analyzeMax(int[] array, int length, double sleep, boolean mark) {
         ArrayVisualizer.toggleAnalysis(true);
         
@@ -168,9 +169,12 @@ final public class Reads {
             Highlights.markArray(1, i);
             Delays.sleep(0.75);
         }
+        
+        int analysis;
+        
         Timer.startLap();
         
-        int analysis = 31 - Integer.numberOfLeadingZeros(max);
+        analysis = 31 - Integer.numberOfLeadingZeros(max);
         
         Timer.stopLap();
         
@@ -179,11 +183,19 @@ final public class Reads {
     }
     
     public int getDigit(int a, int power, int radix) {
-        return (int) (a / Math.pow(radix, power)) % radix;
+        int digit;
+        Timer.startLap();
+        digit = (int) (a / Math.pow(radix, power)) % radix;
+        Timer.stopLap();
+        return digit;
     }
     
     public boolean getBit(int n, int k) {
         // Find boolean value of bit k in n
-        return ((n >> k) & 1) == 1;
+        boolean result;
+        Timer.startLap();
+        result = ((n >> k) & 1) == 1;
+        Timer.stopLap();
+        return result;
     }
 }

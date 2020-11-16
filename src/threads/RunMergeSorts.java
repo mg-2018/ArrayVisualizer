@@ -1,13 +1,13 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.InPlaceMergeSort;
-import sorts.LazyStableSort;
-import sorts.MergeSort;
-import sorts.RotateMergeSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.merge.BottomUpMergeSort;
+import sorts.merge.InPlaceMergeSort;
+import sorts.merge.LazyStableSort;
+import sorts.merge.MergeSort;
+import sorts.merge.RotateMergeSort;
+import sorts.templates.Sort;
 
 /*
  * 
@@ -37,36 +37,39 @@ SOFTWARE.
 
 final public class RunMergeSorts extends MultipleSortThread {
     private Sort MergeSort;
+    private Sort BottomUpMergeSort;
     private Sort InPlaceMergeSort;
     private Sort LazyStableSort;
     private Sort RotateMergeSort;
     
-    public RunMergeSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
-        this.sortCount = 4;
+    public RunMergeSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
+        this.sortCount = 5;
         this.categoryCount = this.sortCount;
         
-        MergeSort        = new        MergeSort(Delays, Highlights, Reads, Writes);
-        InPlaceMergeSort = new InPlaceMergeSort(Delays, Highlights, Reads, Writes);
-        LazyStableSort   = new   LazyStableSort(Delays, Highlights, Reads, Writes);
-        RotateMergeSort  = new  RotateMergeSort(Delays, Highlights, Reads, Writes);
+        MergeSort         = new         MergeSort(this.arrayVisualizer);
+        BottomUpMergeSort = new BottomUpMergeSort(this.arrayVisualizer);
+        InPlaceMergeSort  = new  InPlaceMergeSort(this.arrayVisualizer);
+        LazyStableSort    = new    LazyStableSort(this.arrayVisualizer);
+        RotateMergeSort   = new   RotateMergeSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunMergeSorts.this.runIndividualSort(MergeSort,        0, array, 2048, 1.5);
-        RunMergeSorts.this.runIndividualSort(InPlaceMergeSort, 0, array, 2048, 1.75);
-        RunMergeSorts.this.runIndividualSort(LazyStableSort,   0, array,  256, 0.2);
-        RunMergeSorts.this.runIndividualSort(RotateMergeSort,  0, array,  512, 0.2);
+        RunMergeSorts.this.runIndividualSort(MergeSort,         0, array, 2048, 1.5,  false);
+        RunMergeSorts.this.runIndividualSort(BottomUpMergeSort, 0, array, 2048, 1.5,  false);
+        RunMergeSorts.this.runIndividualSort(InPlaceMergeSort,  0, array, 2048, 1.5,  false);
+        RunMergeSorts.this.runIndividualSort(LazyStableSort,    0, array,  256, 0.2,  false);
+        RunMergeSorts.this.runIndividualSort(RotateMergeSort,   0, array,  512, 0.2,  false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -78,26 +81,26 @@ final public class RunMergeSorts extends MultipleSortThread {
                         RunMergeSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Merge Sorts");
+                    arrayVisualizer.setCategory("Merge Sorts");
 
                     RunMergeSorts.this.executeSortList(array);
                     
                     if(!runAllActive) {
-                        ArrayVisualizer.setCategory("Run Merge Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Merge Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

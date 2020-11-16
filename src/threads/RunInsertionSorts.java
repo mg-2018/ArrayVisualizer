@@ -1,13 +1,14 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.BinaryInsertionSort;
-import sorts.InsertionSort;
-import sorts.PatienceSort;
-import sorts.ShellSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.insert.BinaryInsertionSort;
+import sorts.insert.InsertionSort;
+import sorts.insert.PatienceSort;
+import sorts.insert.ShellSort;
+import sorts.insert.TreeSort;
+import sorts.templates.Sort;
+import utils.Shuffles;
 
 /*
  * 
@@ -40,38 +41,36 @@ final public class RunInsertionSorts extends MultipleSortThread {
     private Sort BinaryInsertionSort;
     private Sort ShellSort;
     private Sort PatienceSort;
-    //private Sort TreeSort;
+    private Sort TreeSort;
     
-    public RunInsertionSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
-        this.sortCount = 4;
-                       //5;
-                       //TODO: Add Treesort back in when fixed
+    public RunInsertionSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
+        this.sortCount = 5;
         this.categoryCount = this.sortCount;
     
-        InsertionSort       = new       InsertionSort(Delays, Highlights, Reads, Writes);
-        BinaryInsertionSort = new BinaryInsertionSort(Delays, Highlights, Reads, Writes);
-        ShellSort           = new           ShellSort(Delays, Highlights, Reads, Writes); 
-        PatienceSort        = new        PatienceSort(Delays, Highlights, Reads, Writes);
-        //Sort TreeSort            = new            TreeSort(Delays, Highlights, Reads, Writes);
+        InsertionSort       = new       InsertionSort(this.arrayVisualizer);
+        BinaryInsertionSort = new BinaryInsertionSort(this.arrayVisualizer);
+        ShellSort           = new           ShellSort(this.arrayVisualizer); 
+        PatienceSort        = new        PatienceSort(this.arrayVisualizer);
+        TreeSort            = new            TreeSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunInsertionSorts.this.runIndividualSort(InsertionSort,       0, array,  128, 0.005);
-        RunInsertionSorts.this.runIndividualSort(BinaryInsertionSort, 0, array,  128, 0.025);
-        RunInsertionSorts.this.runIndividualSort(ShellSort,           0, array,  256, 0.1);
-        RunInsertionSorts.this.runIndividualSort(PatienceSort,        0, array, 2048, 1);
-        //RunInsertionSorts.this.RunIndividualSort(TreeSort,            0, array, 2048, 1);
+        RunInsertionSorts.this.runIndividualSort(InsertionSort,       0, array,  128, 0.005, false);
+        RunInsertionSorts.this.runIndividualSort(BinaryInsertionSort, 0, array,  128, 0.025, false);
+        RunInsertionSorts.this.runIndividualSort(ShellSort,           0, array,  256, 0.1,   false);
+        RunInsertionSorts.this.runIndividualSort(PatienceSort,        0, array, 2048, 1,     false);
+        RunInsertionSorts.this.runIndividualSort(TreeSort,            0, array, 2048, arrayManager.getShuffle() == Shuffles.RANDOM ? 1 : 5, false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -83,26 +82,26 @@ final public class RunInsertionSorts extends MultipleSortThread {
                         RunInsertionSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Insertion Sorts");
+                    arrayVisualizer.setCategory("Insertion Sorts");
 
                     RunInsertionSorts.this.executeSortList(array);
                     
                     if(!runAllActive) {
-                        ArrayVisualizer.setCategory("Run Insertion Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Insertion Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

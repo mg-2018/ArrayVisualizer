@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Polygon;
 
 import main.ArrayVisualizer;
-import templates.Visual;
 import utils.Highlights;
 import utils.Renderer;
 
@@ -14,6 +13,7 @@ import utils.Renderer;
 MIT License
 
 Copyright (c) 2019 w0rthy
+Copyright (c) 2020 aphitorite
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -36,8 +36,11 @@ SOFTWARE.
  */
 
 final public class Circular extends Visual {
-    final private static double CIRC_HEIGHT_RATIO = (9/6.0843731432) * (16/9d);
-    final private static double CIRC_WIDTH_RATIO = (16/6.0843731432) * (16/9d);
+    final private static double CIRC_HEIGHT_RATIO = 45 / 18d;
+    final private static double CIRC_WIDTH_RATIO = 80 / 18d;
+    
+    final private static double PNT_HEIGHT_RATIO = 45 / 19d;
+    final private static double PNT_WIDTH_RATIO = 80 / 19d;
     
     public Circular(ArrayVisualizer ArrayVisualizer) {
         super(ArrayVisualizer);
@@ -67,12 +70,12 @@ final public class Circular extends Visual {
                 this.mainRender.setColor(Color.WHITE);
             }
             else this.mainRender.setColor(getIntColor(array[i], ArrayVisualizer.getCurrentLength()));
+            //else this.mainRender.setColor(getIntColor(ArrayVisualizer.getShadowArray()[array[i]], ArrayVisualizer.getCurrentLength()));
             
             if(Highlights.fancyFinishActive()) {
                 drawFancyFinish(ArrayVisualizer.getLogBaseTwoOfLength(), i, Highlights.getFancyFinishPosition(), this.mainRender, ArrayVisualizer.rainbowEnabled(), ArrayVisualizer.colorEnabled());
             }
             else {
-                /*
                 if(ArrayVisualizer.pointerActive()) {
                     if(Highlights.containsPosition(i)) {
                         if(ArrayVisualizer.analysisEnabled()) {
@@ -82,6 +85,14 @@ final public class Circular extends Visual {
                             this.extraRender.setColor(Color.WHITE);
                         }
 
+                        int pointerSize = 10;
+                        if(ArrayVisualizer.getCurrentLength() < 2048) {
+                            int multiple = ArrayVisualizer.getCurrentLength();
+                            do {
+                                pointerSize += 5;
+                            } while((multiple *= 2) < 2048);
+                        }
+                        
                         //Create new Polygon for the pointer
                         Polygon pointer = new Polygon();
 
@@ -89,17 +100,17 @@ final public class Circular extends Visual {
                         double degrees = 360 * ((double) i / ArrayVisualizer.getCurrentLength());
                         double radians = Math.toRadians(degrees);
                         
-                        int pointerWidthRatio  = (int) (ArrayVisualizer.windowHalfWidth()  / CIRC_WIDTH_RATIO);
-                        int pointerHeightRatio = (int) (ArrayVisualizer.windowHalfHeight() / CIRC_HEIGHT_RATIO);
+                        int pointerWidthRatio  = ArrayVisualizer.windowHalfWidth()  + (int) (Circular.getSinOfDegrees(((i + (i + 1)) / 2d), ArrayVisualizer.halfCircle()) * ((ArrayVisualizer.currentWidth() - 64) / PNT_WIDTH_RATIO));
+                        int pointerHeightRatio = ArrayVisualizer.windowHalfHeight() - (int) (Circular.getCosOfDegrees(((i + (i + 1)) / 2d), ArrayVisualizer.halfCircle()) * ((ArrayVisualizer.windowHeight() - 96) / PNT_HEIGHT_RATIO));
                         
                         //First step: draw a triangle
-                        int[] pointerXValues = {pointerWidthRatio - 10,
+                        int[] pointerXValues = {pointerWidthRatio - pointerSize,
                                                 pointerWidthRatio,
-                                                pointerWidthRatio + 10};
+                                                pointerWidthRatio + pointerSize};
                         
-                        int[] pointerYValues = {pointerHeightRatio - 10,
+                        int[] pointerYValues = {pointerHeightRatio - (10 + (pointerSize - 10)),
                                                 pointerHeightRatio + 10,
-                                                pointerHeightRatio - 10};
+                                                pointerHeightRatio - (10 + (pointerSize - 10))};
                         
                         //Second step: rotate triangle (https://en.wikipedia.org/wiki/Rotation_matrix)
                         for(int j = 0; j < pointerXValues.length; j++) {
@@ -121,15 +132,22 @@ final public class Circular extends Visual {
                         this.extraRender.fillPolygon(pointer);                        
                     }
                 }
-                else */ if(ArrayVisualizer.getCurrentLength() != 2){
+                else if(ArrayVisualizer.getCurrentLength() != 2){
                     colorMarkedBars(ArrayVisualizer.getLogBaseTwoOfLength(), i, Highlights, this.mainRender, ArrayVisualizer.rainbowEnabled(), ArrayVisualizer.colorEnabled(), ArrayVisualizer.analysisEnabled());
                 }
             }
                 
             if(ArrayVisualizer.distanceEnabled()) {
                 //TODO: Rewrite this abomination
-                double len = ((ArrayVisualizer.getCurrentLength() / 2d) - Math.min(Math.min(Math.abs(i - array[i]), Math.abs(i - array[i] + ArrayVisualizer.getCurrentLength())), Math.abs(i - array[i] - ArrayVisualizer.getCurrentLength()))) / (ArrayVisualizer.getCurrentLength() / 2d);
+                //double len = ((ArrayVisualizer.getCurrentLength() / 2d) - Math.min(Math.min(Math.abs(i - array[i]), Math.abs(i - array[i] + ArrayVisualizer.getCurrentLength())), Math.abs(i - array[i] - ArrayVisualizer.getCurrentLength()))) / (ArrayVisualizer.getCurrentLength() / 2d);
 
+                // Both formulas written by aphitorite (https://github.com/aphitorite)
+                // Original triangle wave formula, rewritten
+                // double len = 2 * Math.abs(Math.abs(array[i] - i) - ArrayVisualizer.getCurrentLength() * 0.5) / ArrayVisualizer.getCurrentLength();
+                
+                // Cosine formula
+                double len = (1 + Math.cos((Math.PI * (array[i] - i)) / (ArrayVisualizer.getCurrentLength() * 0.5))) * 0.5;
+                
                 if(ArrayVisualizer.pixelsEnabled()) {
                     int linkedpixX = ArrayVisualizer.windowHalfWidth()  + (int) (Circular.getSinOfDegrees(i, ArrayVisualizer.halfCircle()) * ((ArrayVisualizer.windowWidth()  - 64) / CIRC_WIDTH_RATIO  * len)) + Renderer.getDotWidth()  / 2;
                     int linkedpixY = ArrayVisualizer.windowHalfHeight() - (int) (Circular.getCosOfDegrees(i, ArrayVisualizer.halfCircle()) * ((ArrayVisualizer.windowHeight() - 96) / CIRC_HEIGHT_RATIO * len)) + Renderer.getDotHeight() / 2;
@@ -276,5 +294,5 @@ final public class Circular extends Visual {
                 this.mainRender.fillPolygon(p);
             }
         }
-    }   
+    }
 }

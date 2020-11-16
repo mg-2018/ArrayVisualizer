@@ -15,9 +15,7 @@ import javax.swing.event.ChangeListener;
 
 import main.ArrayManager;
 import main.ArrayVisualizer;
-import templates.Frame;
 import utils.Highlights;
-import visuals.VisualStyles;
 
 /*
  * 
@@ -57,7 +55,7 @@ final public class ArrayFrame extends javax.swing.JFrame {
     
     private ArrayManager ArrayManager;
     private ArrayVisualizer ArrayVisualizer;
-    private Frame abstractFrame;
+    private AppFrame abstractFrame;
     private Highlights Highlights;
     private JFrame Frame;
     private UtilFrame UtilFrame;
@@ -90,38 +88,30 @@ final public class ArrayFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         this.jLabel1 = new javax.swing.JLabel();
-        this.jSlider = new javax.swing.JSlider(SwingConstants.VERTICAL, 1, 14, 11);
-
+        this.jSlider = new javax.swing.JSlider(SwingConstants.VERTICAL, 2, 32768, 2048);
+        
         jLabel1.setText("Array Size");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         Hashtable<Integer, JLabel> labels = new Hashtable<>();
-        labels.put(1, new JLabel("2"));
-        labels.put(2, new JLabel("4"));
-        labels.put(3, new JLabel("8"));
-        labels.put(4, new JLabel("16"));
-        labels.put(5, new JLabel("32"));
-        labels.put(6, new JLabel("64"));
-        labels.put(7, new JLabel("128"));
-        labels.put(8, new JLabel("256"));
-        labels.put(9, new JLabel("512"));
-        labels.put(10, new JLabel("1024"));
-        labels.put(11, new JLabel("2048"));
-        labels.put(12, new JLabel("4096"));
-        labels.put(13, new JLabel("8192"));
-        labels.put(14, new JLabel("16384"));
+        labels.put(2, new JLabel("2"));
+        int value = 2048;
+        while(value <= 32768) {
+            labels.put(value, new JLabel(Integer.toString(value)));
+            value += 2048;
+        }
 
-        jSlider.setMajorTickSpacing(1);
+        jSlider.setMajorTickSpacing(2048);
         jSlider.setLabelTable(labels);
         jSlider.setPaintLabels(true);
         jSlider.setPaintTicks(true);
-        jSlider.setSnapToTicks(true);
+        //jSlider.setSnapToTicks(true);
         jSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent event) {
                 if(ArrayManager.isLengthMutable()) {
-                    ArrayVisualizer.setCurrentLength((int) Math.pow(2, jSlider.getValue()));
+                    ArrayVisualizer.setCurrentLength(jSlider.getValue());
                     //ArrayVisualizer.setEqualItems((int) Math.pow(2, jSlider.getValue()));
                     ArrayManager.initializeArray(array);
                 }

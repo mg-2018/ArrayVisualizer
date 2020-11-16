@@ -30,12 +30,12 @@ public class Tester {
             int siftMinusOne = cur - 1;
 
             // Compare first so we can avoid 2 moves for an element already positioned correctly.
-            if (Reads.compare(array[sift], array[siftMinusOne]) < 0) {
+            if (Reads.compareValues(array[sift], array[siftMinusOne]) < 0) {
                 int tmp = array[sift];
 
                 do { 
                     Writes.write(array, sift--, array[siftMinusOne], 0, false, false);
-                } while (sift != begin && Reads.compare(tmp, array[--siftMinusOne]) < 0);
+                } while (sift != begin && Reads.compareValues(tmp, array[--siftMinusOne]) < 0);
 
                 Writes.write(array, sift, tmp, 0, false, false);
                 limit += cur - sift;
@@ -58,7 +58,7 @@ public class Tester {
 	    Highlights = new Highlights(av, testArr.length);
 	    Highlights.toggleFancyFinishes(false);
 	    
-	    RealTimer = new Timer();
+	    RealTimer = new Timer(av);
 	    RealTimer.toggleRealTimer(false);
 	    
 	    Reads = new Reads(av);

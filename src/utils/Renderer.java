@@ -113,7 +113,6 @@ final public class Renderer {
     
     public static void initializeVisuals(ArrayVisualizer ArrayVisualizer) {        
         Renderer.createRenders(ArrayVisualizer);
-        ArrayVisualizer.updateFontSize();
         ArrayVisualizer.repositionFrames();
     }
     
@@ -160,8 +159,6 @@ final public class Renderer {
                 ArrayVisualizer.updateDimensions();
                 updateGraphics(ArrayVisualizer);
             }
-            
-            ArrayVisualizer.updateFontSize();
         }
         
         ArrayVisualizer.renderBackground();

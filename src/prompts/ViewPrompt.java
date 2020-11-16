@@ -6,9 +6,9 @@ package prompts;
 
 import javax.swing.JFrame;
 
+import frames.AppFrame;
 import frames.UtilFrame;
 import main.ArrayVisualizer;
-import templates.Frame;
 import visuals.VisualStyles;
 import javax.swing.JButton;
 import javax.swing.GroupLayout.Alignment;
@@ -46,7 +46,7 @@ SOFTWARE.
  * @author S630690
  */
 
-final public class ViewPrompt extends javax.swing.JFrame implements Frame {
+final public class ViewPrompt extends javax.swing.JFrame implements AppFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -84,7 +84,7 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
         this.disparityDots = new javax.swing.JButton();
         this.spiralDots= new javax.swing.JButton();
         this.rainbow = new javax.swing.JButton();
-        this.hoops = new javax.swing.JButton();
+        this.customImage = new javax.swing.JButton();
         this.sineWave = new javax.swing.JButton();
         this.waveDots = new javax.swing.JButton();
 
@@ -149,11 +149,11 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
             }
         });
 
-        hoops.setText("Hoops");
-        hoops.addActionListener(new java.awt.event.ActionListener() {
+        customImage.setText("Custom Image");
+        customImage.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hoopsActionPerformed(evt);
+                customImageActionPerformed(evt);
             }
         });
 
@@ -207,7 +207,7 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
                         .addComponent(dotGraph, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                         .addComponent(triangleMesh, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(spiral, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                        .addComponent(hoops, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                        .addComponent(customImage, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                         .addComponent(spiralDots, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
                     .addGap(18))
         );
@@ -227,7 +227,7 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
                     .addPreferredGap(ComponentPlacement.UNRELATED)
                     .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                         .addComponent(colorCircle)
-                        .addComponent(hoops))
+                        .addComponent(customImage))
                     .addPreferredGap(ComponentPlacement.UNRELATED)
                     .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                         .addComponent(disparity)
@@ -285,7 +285,7 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
         //TODO: Pointer as separate option
         setAllFieldsFalse();
         ArrayVisualizer.setVisual(VisualStyles.CIRCULAR);
-        //ArrayVisualizer.togglePointer(true);
+        ArrayVisualizer.togglePointer(true);
         ArrayVisualizer.toggleRainbow(true);
         if(ArrayVisualizer.getCurrentLength() == 2) ArrayVisualizer.setCurrentLength(4);
         UtilFrame.jButton2ResetText();
@@ -308,9 +308,9 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
         UtilFrame.jButton2ResetText();
         dispose();
     }
-    private void hoopsActionPerformed(java.awt.event.ActionEvent evt) {
+    private void customImageActionPerformed(java.awt.event.ActionEvent evt) {
         setAllFieldsFalse();
-        ArrayVisualizer.setVisual(VisualStyles.HOOPS);
+        ArrayVisualizer.setVisual(VisualStyles.CUSTOMIMAGE);
         UtilFrame.jButton2ResetText();
         dispose();
     }
@@ -358,7 +358,7 @@ final public class ViewPrompt extends javax.swing.JFrame implements Frame {
     private javax.swing.JButton disparity;
     private javax.swing.JButton disparityDots;
     private javax.swing.JButton rainbow;
-    private javax.swing.JButton hoops;
+    private javax.swing.JButton customImage;
     private javax.swing.JButton sineWave;
     private javax.swing.JButton waveDots;
     private javax.swing.JLabel jLabel1;

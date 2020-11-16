@@ -1,18 +1,18 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.BadSort;
-import sorts.BogoSort;
-import sorts.BubbleBogoSort;
-import sorts.CocktailBogoSort;
-import sorts.ExchangeBogoSort;
-import sorts.LessBogoSort;
-import sorts.SillySort;
-import sorts.SlowSort;
-import sorts.StoogeSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.distribute.BogoBogoSort;
+import sorts.distribute.BogoSort;
+import sorts.distribute.CocktailBogoSort;
+import sorts.distribute.LessBogoSort;
+import sorts.exchange.BubbleBogoSort;
+import sorts.exchange.ExchangeBogoSort;
+import sorts.exchange.SillySort;
+import sorts.exchange.SlowSort;
+import sorts.exchange.StoogeSort;
+import sorts.select.BadSort;
+import sorts.templates.Sort;
 
 /*
  * 
@@ -50,45 +50,49 @@ final public class RunImpracticalSorts extends MultipleSortThread {
     private Sort LessBogoSort;
     private Sort CocktailBogoSort;
     private Sort BogoSort;
+    private Sort BogoBogoSort;
     
-    public RunImpracticalSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
-        this.sortCount = 9;
+    public RunImpracticalSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
+        this.sortCount = 10;
         this.categoryCount = this.sortCount;
         
-        BadSort          = new          BadSort(Delays, Highlights, Reads, Writes);
-        StoogeSort       = new       StoogeSort(Delays, Highlights, Reads, Writes);
-        SillySort        = new        SillySort(Delays, Highlights, Reads, Writes);
-        SlowSort         = new         SlowSort(Delays, Highlights, Reads, Writes);
-        ExchangeBogoSort = new ExchangeBogoSort(Delays, Highlights, Reads, Writes);
-        BubbleBogoSort   = new   BubbleBogoSort(Delays, Highlights, Reads, Writes);
-        LessBogoSort     = new     LessBogoSort(Delays, Highlights, Reads, Writes);
-        CocktailBogoSort = new CocktailBogoSort(Delays, Highlights, Reads, Writes);
-        BogoSort         = new         BogoSort(Delays, Highlights, Reads, Writes);
+        BadSort          = new          BadSort(this.arrayVisualizer);
+        StoogeSort       = new       StoogeSort(this.arrayVisualizer);
+        SillySort        = new        SillySort(this.arrayVisualizer);
+        SlowSort         = new         SlowSort(this.arrayVisualizer);
+        ExchangeBogoSort = new ExchangeBogoSort(this.arrayVisualizer);
+        BubbleBogoSort   = new   BubbleBogoSort(this.arrayVisualizer);
+        LessBogoSort     = new     LessBogoSort(this.arrayVisualizer);
+        CocktailBogoSort = new CocktailBogoSort(this.arrayVisualizer);
+        BogoSort         = new         BogoSort(this.arrayVisualizer);
+        BogoBogoSort     = new     BogoBogoSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunImpracticalSorts.this.runIndividualSort(BadSort,          0, array, 64,  0.0075);
-        RunImpracticalSorts.this.runIndividualSort(StoogeSort,       0, array, 64,  0.005);
-        RunImpracticalSorts.this.runIndividualSort(SillySort,        0, array, 64, 10);
-        RunImpracticalSorts.this.runIndividualSort(SlowSort,         0, array, 64, 10);
+        RunImpracticalSorts.this.runIndividualSort(BadSort,          0, array, 64,  0.0075, true);
+        RunImpracticalSorts.this.runIndividualSort(StoogeSort,       0, array, 64,  0.005,  true);
+        RunImpracticalSorts.this.runIndividualSort(SillySort,        0, array, 64, 10,      true);
+        RunImpracticalSorts.this.runIndividualSort(SlowSort,         0, array, 64, 10,      true);
+        
         Sounds.toggleSofterSounds(true);
-        RunImpracticalSorts.this.runIndividualSort(ExchangeBogoSort, 0, array, 32,  0.01);
-        RunImpracticalSorts.this.runIndividualSort(BubbleBogoSort,   0, array, 32,  0.01);
-        RunImpracticalSorts.this.runIndividualSort(LessBogoSort,     0, array, 16,  0.0025);
-        RunImpracticalSorts.this.runIndividualSort(CocktailBogoSort, 0, array, 16,  0.0025);
-        RunImpracticalSorts.this.runIndividualSort(BogoSort,         0, array,  8,  1);
+        RunImpracticalSorts.this.runIndividualSort(ExchangeBogoSort, 0, array, 32,  0.01,   true);
+        RunImpracticalSorts.this.runIndividualSort(BubbleBogoSort,   0, array, 32,  0.01,   true);
+        RunImpracticalSorts.this.runIndividualSort(LessBogoSort,     0, array, 16,  0.0025, true);
+        RunImpracticalSorts.this.runIndividualSort(CocktailBogoSort, 0, array, 16,  0.0025, true);
+        RunImpracticalSorts.this.runIndividualSort(BogoSort,         0, array,  8,  1,      true);
+        RunImpracticalSorts.this.runIndividualSort(BogoBogoSort,     0, array,  6,  1,      true);
         Sounds.toggleSofterSounds(false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -100,9 +104,9 @@ final public class RunImpracticalSorts extends MultipleSortThread {
                         RunImpracticalSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Impractical Sorts");
+                    arrayVisualizer.setCategory("Impractical Sorts");
 
                     RunImpracticalSorts.this.executeSortList(array);
                     
@@ -110,19 +114,19 @@ final public class RunImpracticalSorts extends MultipleSortThread {
                         Thread.sleep(3000);
                     }
                     else {
-                        ArrayVisualizer.setCategory("Run Impractical Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Impractical Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

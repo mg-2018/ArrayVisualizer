@@ -6,14 +6,11 @@ import javax.swing.JOptionPane;
 
 import main.ArrayManager;
 import main.ArrayVisualizer;
-import templates.JErrorPane;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.templates.Sort;
 import utils.Delays;
-import utils.Highlights;
-import utils.Reads;
 import utils.Sounds;
 import utils.Timer;
-import utils.Writes;
 
 /*
  * 
@@ -42,28 +39,22 @@ SOFTWARE.
  */
 
 final public class RunComparisonSort {
-    private ArrayManager ArrayManager;
-    private ArrayVisualizer ArrayVisualizer;
+    private ArrayManager arrayManager;
+    private ArrayVisualizer arrayVisualizer;
     private Delays delayOps;
-    private Highlights markOps;
-    private Reads readOps;
-    private Writes writeOps;
-    private Sounds Sounds;
+    private Sounds sounds;
     private Timer realTimer;
     
-    public RunComparisonSort(ArrayVisualizer ArrayVisualizer) {
-        this.ArrayVisualizer = ArrayVisualizer;
-        this.ArrayManager = ArrayVisualizer.getArrayManager();
-        this.delayOps = ArrayVisualizer.getDelays();
-        this.markOps = ArrayVisualizer.getHighlights();
-        this.readOps = ArrayVisualizer.getReads();
-        this.writeOps = ArrayVisualizer.getWrites();
-        this.Sounds = ArrayVisualizer.getSounds();
-        this.realTimer = ArrayVisualizer.getTimer();
+    public RunComparisonSort(ArrayVisualizer arrayVisualizer) {
+        this.arrayVisualizer = arrayVisualizer;
+        this.arrayManager = arrayVisualizer.getArrayManager();
+        this.delayOps = arrayVisualizer.getDelays();
+        this.sounds = arrayVisualizer.getSounds();
+        this.realTimer = arrayVisualizer.getTimer();
     }
     
     public void ReportComparativeSort(int[] array, int selection) {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         //TODO: This code is bugged! It causes the program to forget the sleep ratio specified by the user!
@@ -72,27 +63,27 @@ final public class RunComparisonSort {
             delayOps.changeSkipped(false);
         }
 
-        Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        sounds.toggleSound(true);
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try {
-                    Class<?> sortClass = Class.forName(ArrayVisualizer.getComparisonSorts()[0][selection]);
-                    Constructor<?> newSort = sortClass.getConstructor(new Class[] {Delays.class, Highlights.class, Reads.class, Writes.class});
-                    Sort sort = (Sort) newSort.newInstance(delayOps, markOps, readOps, writeOps);
+                    Class<?> sortClass = Class.forName(arrayVisualizer.getComparisonSorts()[0][selection]);
+                    Constructor<?> newSort = sortClass.getConstructor(new Class[] {ArrayVisualizer.class});
+                    Sort sort = (Sort) newSort.newInstance(RunComparisonSort.this.arrayVisualizer);
                 
                     boolean goAhead;
                     
-                    ArrayManager.toggleMutableLength(false);
-                    ArrayManager.refreshArray(array, ArrayVisualizer.getCurrentLength(), ArrayVisualizer);
+                    arrayManager.toggleMutableLength(false);
+                    arrayManager.refreshArray(array, arrayVisualizer.getCurrentLength(), arrayVisualizer);
                     
-                    if(sort.getUnreasonablySlow() && ArrayVisualizer.getCurrentLength() >= sort.getUnreasonableLimit()) {
+                    if(sort.isUnreasonablySlow() && arrayVisualizer.getCurrentLength() > sort.getUnreasonableLimit()) {
                         goAhead = false;
-                        Object[] options = { "Let's see how bad " + sort.getReportSortID() + " is!", "Cancel" };
+                        Object[] options = { "Let's see how bad " + sort.getRunSortName() + " is!", "Cancel" };
                         
-                        if(sort.bogoSort()) {
-                            int warning = JOptionPane.showOptionDialog(ArrayVisualizer.getMainWindow(), "Even at a high speed, "
-                                                                     + sort.getReportSortID() + "ing " + ArrayVisualizer.getCurrentLength()
+                        if(sort.isBogoSort()) {
+                            int warning = JOptionPane.showOptionDialog(arrayVisualizer.getMainWindow(), "Even at a high speed, "
+                                                                     + sort.getRunSortName() + "ing " + arrayVisualizer.getCurrentLength()
                                                                      + " numbers will almost certainly not finish in a reasonable amount of time. "
                                                                      + "Are you sure you want to continue?", "Warning!", 2, JOptionPane.WARNING_MESSAGE,
                                                                      null, options, options[1]);
@@ -100,8 +91,8 @@ final public class RunComparisonSort {
                             else goAhead = false;
                         }
                         else {
-                            int warning = JOptionPane.showOptionDialog(ArrayVisualizer.getMainWindow(), "Even at a high speed, " 
-                                                                     + sort.getReportSortID() + "ing " + ArrayVisualizer.getCurrentLength()
+                            int warning = JOptionPane.showOptionDialog(arrayVisualizer.getMainWindow(), "Even at a high speed, " 
+                                                                     + sort.getRunSortName() + "ing " + arrayVisualizer.getCurrentLength()
                                                                      + " numbers will not finish in a reasonable amount of time. "
                                                                      + "Are you sure you want to continue?", "Warning!", 2, JOptionPane.WARNING_MESSAGE,
                                                                      null, options, options[1]);
@@ -115,25 +106,25 @@ final public class RunComparisonSort {
                     }
                     
                     if(goAhead) {
-                        ArrayVisualizer.setHeading(sort.getReportSortID());
-                        ArrayVisualizer.setCategory(sort.getCategory());
+                        arrayVisualizer.setHeading(sort.getRunSortName());
+                        arrayVisualizer.setCategory(sort.getCategory());
                         
                         realTimer.enableRealTimer();
-                        sort.runSort(array, ArrayVisualizer.getCurrentLength(), 0);
+                        sort.runSort(array, arrayVisualizer.getCurrentLength(), 0);
                     }
                     else {
-                        ArrayManager.initializeArray(array);
+                        arrayManager.initializeArray(array);
                     }
                 }
                 catch(Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
-                ArrayVisualizer.endSort();
-                ArrayManager.toggleMutableLength(true);
-                Sounds.toggleSound(false);
+                arrayVisualizer.endSort();
+                arrayManager.toggleMutableLength(true);
+                sounds.toggleSound(false);
             }
         });
        
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

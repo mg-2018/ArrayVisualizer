@@ -19,7 +19,6 @@ import main.ArrayVisualizer;
 import prompts.ShufflePrompt;
 import prompts.SortPrompt;
 import prompts.ViewPrompt;
-import templates.Frame;
 import utils.Delays;
 import utils.Highlights;
 import utils.Sounds;
@@ -63,7 +62,7 @@ final public class UtilFrame extends javax.swing.JFrame {
     private ArrayManager ArrayManager;
     private ArrayVisualizer ArrayVisualizer;
     private Delays Delays;
-    private Frame abstractFrame;
+    private AppFrame abstractFrame;
     private Highlights Highlights;
     private JFrame Frame;
     private Timer RealTimer;
@@ -169,7 +168,7 @@ final public class UtilFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Skip Sort");
+        jButton4.setText("Cancel Delays");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -487,5 +486,4 @@ final public class UtilFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JSlider jSlider;
-    // End of variables declaration//GEN-END:variables
 }

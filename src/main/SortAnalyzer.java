@@ -2,19 +2,15 @@ package main;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
-import templates.JErrorPane;
-import templates.Sort;
-import utils.Delays;
-import utils.Highlights;
-import utils.Reads;
-import utils.Writes;
+import panes.JErrorPane;
+import sorts.templates.Sort;
+import sorts.templates.SortComparator;
 
 /*
  * 
@@ -46,37 +42,44 @@ final public class SortAnalyzer {
     private ArrayList<Sort> comparisonSorts;
     private ArrayList<Sort> distributionSorts;
     private ArrayList<String> invalidSorts;
+    private ArrayList<String> suggestions;
     
-    private Delays Delays;
-    private Highlights Highlights;
-    private Reads Reads;
-    private Writes Writes;
+    private String sortErrorMsg;
     
-    public SortAnalyzer(ArrayVisualizer ArrayVisualizer) {
+    private ArrayVisualizer arrayVisualizer;
+    
+    public SortAnalyzer(ArrayVisualizer arrayVisualizer) {
         this.comparisonSorts = new ArrayList<>();
         this.distributionSorts = new ArrayList<>();
         this.invalidSorts = new ArrayList<>();
+        this.suggestions = new ArrayList<>();
         
-        this.Delays = ArrayVisualizer.getDelays();
-        this.Highlights = ArrayVisualizer.getHighlights();
-        this.Reads = ArrayVisualizer.getReads();
-        this.Writes = ArrayVisualizer.getWrites();
+        this.arrayVisualizer = arrayVisualizer;
     }
     
+    @SuppressWarnings("unused")
     public void analyzeSorts() {
-        try (ScanResult scanResult = new ClassGraph().whitelistPackages("sorts").scan()) {
+        ClassGraph classGraph = new ClassGraph();
+        classGraph.whitelistPackages("sorts");
+        classGraph.blacklistPackages("sorts.templates");
+        
+        try (ScanResult scanResult = classGraph.scan()) {
             List<ClassInfo> sortFiles;
             sortFiles = scanResult.getAllClasses();
             
             for(int i = 0; i < sortFiles.size(); i++) {
                 try {
                     Class<?> sortClass = Class.forName(sortFiles.get(i).getName());
-                    Constructor<?> newSort = sortClass.getConstructor(new Class[] {Delays.class, Highlights.class, Reads.class, Writes.class});
-                    Sort sort = (Sort) newSort.newInstance(this.Delays, this.Highlights, this.Reads, this.Writes);
+                    Constructor<?> newSort = sortClass.getConstructor(new Class[] {ArrayVisualizer.class});
+                    Sort sort = (Sort) newSort.newInstance(this.arrayVisualizer);
                     
                     try {
                         if(verifySort(sort)) {
-                            if(sort.comparisonBased()) {
+                            String suggestion = checkForSuggestions(sort);
+                            if(!suggestion.isEmpty()) {
+                                suggestions.add(suggestion);
+                            }
+                            if(sort.isComparisonBased()) {
                                 comparisonSorts.add(sort);
                             }
                             else {
@@ -84,69 +87,80 @@ final public class SortAnalyzer {
                             }
                         }
                         else {
-                            throw new Exception(sort.getClass().getName() + " is not a valid algorithm!");
+                            throw new Exception();
                         }
                     }
                     catch(Exception e) {
-                        invalidSorts.add(sort.getClass().getName());
-                        e.printStackTrace();
+                        invalidSorts.add(sort.getClass().getName() + " (" + this.sortErrorMsg + ")");
                     }
                 }
                 catch(Exception e) {
-                    invalidSorts.add(sortFiles.get(i).getName());
-                    e.printStackTrace();
+                    JErrorPane.invokeErrorMessage(e, "Could not compile " + sortFiles.get(i).getName());
+                    invalidSorts.add(sortFiles.get(i).getName() + " (failed to compile)");
                 }
             }
-        } catch (SecurityException | IllegalArgumentException e) {
+            SortComparator sortComparator = new SortComparator();
+            Collections.sort(comparisonSorts, sortComparator);
+            Collections.sort(distributionSorts, sortComparator);
+        } catch (Exception e) {
             JErrorPane.invokeErrorMessage(e);
         }
     }
     
-    private static boolean verifySort(Sort sort) {
-        boolean validSort = true;
-        
-        if(sort.getSortPromptID().equals("")) {
-            System.out.println(sort.getClass().getName() + " does not have a prompt ID! ");
-            validSort = false;
+    private boolean verifySort(Sort sort) {
+        if(!sort.isSortEnabled()) {
+            this.sortErrorMsg = "manually disabled";
+            return false;
         }
-        if(sort.getRunAllID().equals("")) {
-            System.out.println(sort.getClass().getName() + " does not have a 'Run All Sorts' ID! ");
-            validSort = false;
+        if(sort.getSortListName().equals("")) {
+            this.sortErrorMsg = "missing 'Choose Sort' name";
+            return false;
         }
-        if(sort.getReportSortID().equals("")) {
-            System.out.println(sort.getClass().getName() + " does not have a 'Run Sort' ID! ");
-            validSort = false;
+        if(sort.getRunAllSortsName().equals("")) {
+            this.sortErrorMsg = "missing 'Run All' name";
+            return false;
+        }
+        if(sort.getRunSortName().equals("")) {
+            this.sortErrorMsg = "missing 'Run Sort' name";
+            return false;
         }
         if(sort.getCategory().equals("")) {
-            System.out.println(sort.getClass().getName() + " does not have a category! ");
-            validSort = false;
+            this.sortErrorMsg = "missing category";
+            return false;
         }
         
-        if(sort.getUnreasonablySlow() && sort.getUnreasonableLimit() == 0) {
-            System.out.println(sort.getClass().getName() + " is marked as an unreasonably slow sort, yet does not have a threshold for a warning message! ");
-            validSort = false;
+        return true;
+    }
+    
+    private static String checkForSuggestions(Sort sort) {
+        StringBuilder suggestions = new StringBuilder();
+        boolean warned = false;
+        
+        if(sort.isBogoSort() && !sort.isUnreasonablySlow()) {
+            suggestions.append("- " + sort.getRunSortName() + " is a bogosort. It should be marked 'unreasonably slow'.\n");
+            warned = true;
         }
-        if(!sort.getUnreasonablySlow() && sort.getUnreasonableLimit() != 0) {
-            System.out.println(sort.getClass().getName() + " is not marked as an unreasonably slow sort, yet has an unreasonably slow limit other than zero. ");
-            sort.setUnreasonableLimit(0);
+        if(sort.isUnreasonablySlow() && sort.getUnreasonableLimit() == 0) {
+            suggestions.append("- A warning will pop up every time you select " + sort.getRunSortName() + ". You might want to change its 'unreasonable limit'.\n");
+            warned = true;
+        }
+        if(!sort.isUnreasonablySlow() && sort.getUnreasonableLimit() != 0) {
+            suggestions.append("- You might want to set " + sort.getRunSortName() + "'s 'unreasonable limit' to 0. It's not marked 'unreasonably slow'.\n");
+            warned = true;
+        }
+        if(sort.isRadixSort() && !sort.usesBuckets()) {
+            suggestions.append("- " + sort.getRunSortName() + " is a radix sort and should also be classified as a bucket sort.\n");
+            warned = true;
+        }
+        if(sort.isRadixSort() && sort.isComparisonBased()) {
+            suggestions.append("- " + sort.getRunSortName() + " is a radix sort. It probably shouldn't be labelled as a comparison-based sort.\n");
+            warned = true;
         }
         
-        if(!sort.getUnreasonablySlow() && sort.bogoSort()) {
-            System.out.println(sort.getClass().getName() + " is a type of Bogosort, yet is not labeled as unreasonably slow! ");
-            validSort = false;
+        if(warned) {
+            suggestions.deleteCharAt(suggestions.length() - 1);
         }
-        
-        if(sort.radixSort() && !sort.usesBuckets()) {
-            System.out.println(sort.getClass().getName() + " is a radix sort and should also be classified as a bucket sort. ");
-            sort.isBucketSort(true);
-        }
-        
-        if(sort.radixSort() && sort.comparisonBased()) {
-            System.out.println(sort.getClass().getName() + " is a radix sort that is incorrectly labeled as a comparison sort! ");
-            validSort = false;
-        }
-        
-        return validSort;
+        return suggestions.toString();
     }
     
     public String[][] getComparisonSorts() {
@@ -154,7 +168,7 @@ final public class SortAnalyzer {
         
         for(int i = 0; i < ComparisonSorts[0].length; i++) {
             ComparisonSorts[0][i] = comparisonSorts.get(i).getClass().getName();
-            ComparisonSorts[1][i] = comparisonSorts.get(i).getSortPromptID();
+            ComparisonSorts[1][i] = comparisonSorts.get(i).getSortListName();
         }
         
         return ComparisonSorts;
@@ -164,8 +178,9 @@ final public class SortAnalyzer {
         
         for(int i = 0; i < DistributionSorts[0].length; i++) {
             DistributionSorts[0][i] = distributionSorts.get(i).getClass().getName();
-            DistributionSorts[1][i] = distributionSorts.get(i).getSortPromptID();
+            DistributionSorts[1][i] = distributionSorts.get(i).getSortListName();
         }
+        
         return DistributionSorts;
     }
     public String[] getInvalidSorts() {
@@ -177,5 +192,15 @@ final public class SortAnalyzer {
         InvalidSorts = invalidSorts.toArray(InvalidSorts);
         
         return InvalidSorts;
+    }
+    public String[] getSuggestions() {
+        if(suggestions.size() < 1) {
+            return null;
+        }
+        
+        String[] allSuggestions = new String[suggestions.size()];
+        allSuggestions = suggestions.toArray(allSuggestions);
+        
+        return allSuggestions;
     }
 }

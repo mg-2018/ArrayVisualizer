@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 import main.ArrayVisualizer;
-import templates.Visual;
 import utils.Highlights;
 import utils.Renderer;
 

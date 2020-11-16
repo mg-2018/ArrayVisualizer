@@ -3,7 +3,6 @@ package visuals;
 import java.awt.Color;
 
 import main.ArrayVisualizer;
-import templates.Visual;
 import utils.Highlights;
 import utils.Renderer;
 
@@ -55,6 +54,7 @@ final public class Bars extends Visual {
             else {
                 if(ArrayVisualizer.rainbowEnabled() || ArrayVisualizer.colorEnabled()) {
                     this.mainRender.setColor(getIntColor(array[i], ArrayVisualizer.getCurrentLength()));
+                    //if(array[i] > -1) this.mainRender.setColor(getIntColor(ArrayVisualizer.getShadowArray()[array[i]], ArrayVisualizer.getCurrentLength()));
                 }
                 else this.mainRender.setColor(Color.WHITE);
 

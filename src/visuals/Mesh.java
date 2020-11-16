@@ -3,7 +3,6 @@ package visuals;
 import java.awt.Color;
 
 import main.ArrayVisualizer;
-import templates.Visual;
 import utils.Highlights;
 import utils.Renderer;
 
@@ -43,7 +42,6 @@ final public class Mesh extends Visual {
         switch(length) {
         case 2:   height *= 20;   break;
         case 4:   height *= 13;   break;
-        case 8:   height *= 8;    break;
         case 16:
         case 32:  height *= 4.4;  break; 
         case 64:  height *= 2.3;  break;
@@ -85,7 +83,7 @@ final public class Mesh extends Visual {
         int[] triptsy = new int[3];
 
         for(int i = 0; i < ArrayVisualizer.getCurrentLength(); i++){
-            if(Highlights.containsPosition(i) && ArrayVisualizer.getCurrentLength() != 2) {
+            if(Highlights.containsPosition(i) && ArrayVisualizer.getCurrentLength() > 8) {
                 if(ArrayVisualizer.analysisEnabled()) this.mainRender.setColor(Color.WHITE);
                 else                                  this.mainRender.setColor(Color.BLACK);
             }

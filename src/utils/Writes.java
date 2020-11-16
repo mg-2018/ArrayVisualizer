@@ -1,13 +1,9 @@
 package utils;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import main.ArrayVisualizer;
-import templates.TimSorting;
 
 /*
  * 
@@ -42,11 +38,10 @@ SOFTWARE.
 final public class Writes {
     private volatile long reversals;
     private volatile long swaps;
-    private volatile long tempWrites;
+    private volatile long auxWrites;
     private volatile long writes;
     
     private DecimalFormat formatter;
-    private DecimalFormatSymbols symbols;
     
     private Delays Delays;
     private Highlights Highlights;
@@ -55,24 +50,20 @@ final public class Writes {
     public Writes(ArrayVisualizer ArrayVisualizer) {
         this.reversals = 0;
         this.swaps = 0;
-        this.tempWrites = 0;
+        this.auxWrites = 0;
         this.writes = 0;
         
         this.Delays = ArrayVisualizer.getDelays();
         this.Highlights = ArrayVisualizer.getHighlights();
         this.Timer = ArrayVisualizer.getTimer();
         
-        this.formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        this.symbols = this.formatter.getDecimalFormatSymbols();
-        
-        this.symbols.setGroupingSeparator(',');
-        this.formatter.setDecimalFormatSymbols(this.symbols);
+        this.formatter = ArrayVisualizer.getNumberFormat();
     }
     
     public void resetStatistics() {
         this.reversals = 0;
         this.swaps = 0;
-        this.tempWrites = 0;
+        this.auxWrites = 0;
         this.writes = 0;
     }
     
@@ -98,18 +89,18 @@ final public class Writes {
         }
     }
     
-    public String getTempWrites() {
-        if(this.tempWrites < 0) {
-            this.tempWrites = Long.MIN_VALUE;
+    public String getAuxWrites() {
+        if(this.auxWrites < 0) {
+            this.auxWrites = Long.MIN_VALUE;
             return "Over " + this.formatter.format(Long.MAX_VALUE);
         }
         else {
-            if(this.tempWrites == 1) return this.tempWrites + " Write to Auxiliary Array(s)";
-            else                     return this.formatter.format(this.tempWrites) + " Writes to Auxiliary Array(s)";
+            if(this.auxWrites == 1) return this.auxWrites + " Write to Auxiliary Array(s)";
+            else                     return this.formatter.format(this.auxWrites) + " Writes to Auxiliary Array(s)";
         }
     }
     
-    public String getWrites() {
+    public String getMainWrites() {
         if(this.writes < 0) {
             this.writes = Long.MIN_VALUE;
             return "Over " + this.formatter.format(Long.MAX_VALUE);
@@ -120,18 +111,22 @@ final public class Writes {
         }
     }
     
-    public void changeTempWrites(int value) {
-        this.tempWrites += value;
+    public void changeAuxWrites(int value) {
+        this.auxWrites += value;
     }
     
     public void changeWrites(int value) {
         this.writes += value;
     }
     
+    public void changeReversals(int value) {
+        this.reversals += value;
+    }
+    
     private void updateSwap(boolean auxwrite) {
         this.swaps++;
-        if(auxwrite) this.tempWrites += 2;
-        else             this.writes += 2;
+        if(auxwrite) this.auxWrites += 2;
+        else            this.writes += 2;
     }
 
     private void markSwap(int a, int b) {
@@ -180,8 +175,8 @@ final public class Writes {
     public void write(int[] array, int at, int equals, double pause, boolean mark, boolean auxwrite) {
         if(mark) Highlights.markArray(1, at);
         
-        if(auxwrite) tempWrites++;
-        else             writes++;
+        if(auxwrite) auxWrites++;
+        else            writes++;
         
         Timer.startLap();
         
@@ -195,8 +190,8 @@ final public class Writes {
     public void multiDimWrite(int[][] array, int x, int y, int equals, double pause, boolean mark, boolean auxwrite) {
         if(mark) Highlights.markArray(1, x);
         
-        if(auxwrite) tempWrites++;
-        else             writes++;
+        if(auxwrite) auxWrites++;
+        else            writes++;
 
         Timer.startLap();
         
@@ -211,7 +206,7 @@ final public class Writes {
     public void mockWrite(int length, int pos, int val, double pause) {
         int[] mockArray = new int[length];
         
-        this.tempWrites++;
+        this.auxWrites++;
 
         Timer.startLap();
         
@@ -256,7 +251,7 @@ final public class Writes {
         int radix = registers.length;
 
         this.transcribe(tempArray, registers, 0, false, true);
-        tempWrites -= length;
+        auxWrites -= length;
 
         for(int i = 0; i < length; i++) {
             int register = i % radix;
@@ -280,26 +275,26 @@ final public class Writes {
     }
     
     //Methods mocking System.arraycopy (reversearraycopy is for TimSort's MergeHi and BinaryInsert, and WikiSort's Rotate)
-    public void arraycopy(int[] src, int srcPos, int[] dest, int destPos, int length, double sleep, boolean mark, boolean temp) {
+    public void arraycopy(int[] src, int srcPos, int[] dest, int destPos, int length, double sleep, boolean mark, boolean aux) {
         for(int i = 0; i < length; i++) {
             if(mark) {
-                if(temp) Highlights.markArray(1, srcPos  + i);
-                else     Highlights.markArray(1, destPos + i);
+                if(aux) Highlights.markArray(1, srcPos  + i);
+                else    Highlights.markArray(1, destPos + i);
             }
             
             //TODO: Handle order of Delays in write method better
-            this.write(dest, destPos + i, src[srcPos + i], sleep, false, temp);
+            this.write(dest, destPos + i, src[srcPos + i], sleep, false, aux);
         }
     }
     
-    public void reversearraycopy(int[] src, int srcPos, int[] dest, int destPos, int length, double sleep, boolean mark, boolean temp) {
+    public void reversearraycopy(int[] src, int srcPos, int[] dest, int destPos, int length, double sleep, boolean mark, boolean aux) {
         for(int i = length - 1; i >= 0; i--) {
             if(mark) {
-                if(temp) Highlights.markArray(1, srcPos  + i);
-                else     Highlights.markArray(1, destPos + i);
+                if(aux) Highlights.markArray(1, srcPos  + i);
+                else    Highlights.markArray(1, destPos + i);
             }
             
-            this.write(dest, destPos + i, src[srcPos + i], sleep, false, temp);
+            this.write(dest, destPos + i, src[srcPos + i], sleep, false, aux);
         }
     }
     

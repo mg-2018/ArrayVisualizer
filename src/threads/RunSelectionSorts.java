@@ -1,20 +1,19 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.CycleSort;
-import sorts.DoubleSelectionSort;
-import sorts.FlippedMinHeapSort;
-import sorts.MaxHeapSort;
-import sorts.MinHeapSort;
-import sorts.PoplarHeapSort;
-import sorts.SelectionSort;
-import sorts.SmoothSort;
-import sorts.TernaryHeapSort;
-import sorts.TournamentSort;
-import sorts.WeakHeapSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.select.CycleSort;
+import sorts.select.DoubleSelectionSort;
+import sorts.select.FlippedMinHeapSort;
+import sorts.select.MaxHeapSort;
+import sorts.select.MinHeapSort;
+import sorts.select.PoplarHeapSort;
+import sorts.select.SelectionSort;
+import sorts.select.SmoothSort;
+import sorts.select.TernaryHeapSort;
+import sorts.select.TournamentSort;
+import sorts.select.WeakHeapSort;
+import sorts.templates.Sort;
 
 /*
  * 
@@ -55,46 +54,46 @@ final public class RunSelectionSorts extends MultipleSortThread {
     private Sort PoplarHeapSort;
     private Sort TournamentSort;
     
-    public RunSelectionSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
+    public RunSelectionSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
         this.sortCount = 11;
         this.categoryCount = this.sortCount;
         
-        SelectionSort       = new       SelectionSort(Delays, Highlights, Reads, Writes);
-        DoubleSelectionSort = new DoubleSelectionSort(Delays, Highlights, Reads, Writes);
-        CycleSort           = new           CycleSort(Delays, Highlights, Reads, Writes);
-        MaxHeapSort         = new         MaxHeapSort(Delays, Highlights, Reads, Writes);
-        MinHeapSort         = new         MinHeapSort(Delays, Highlights, Reads, Writes);
-        FlippedMinHeapSort  = new  FlippedMinHeapSort(Delays, Highlights, Reads, Writes);
-        WeakHeapSort        = new        WeakHeapSort(Delays, Highlights, Reads, Writes);
-        TernaryHeapSort     = new     TernaryHeapSort(Delays, Highlights, Reads, Writes);
-        SmoothSort          = new          SmoothSort(Delays, Highlights, Reads, Writes);
-        PoplarHeapSort      = new      PoplarHeapSort(Delays, Highlights, Reads, Writes);
-        TournamentSort      = new      TournamentSort(Delays, Highlights, Reads, Writes);
+        SelectionSort       = new       SelectionSort(this.arrayVisualizer);
+        DoubleSelectionSort = new DoubleSelectionSort(this.arrayVisualizer);
+        CycleSort           = new           CycleSort(this.arrayVisualizer);
+        MaxHeapSort         = new         MaxHeapSort(this.arrayVisualizer);
+        MinHeapSort         = new         MinHeapSort(this.arrayVisualizer);
+        FlippedMinHeapSort  = new  FlippedMinHeapSort(this.arrayVisualizer);
+        WeakHeapSort        = new        WeakHeapSort(this.arrayVisualizer);
+        TernaryHeapSort     = new     TernaryHeapSort(this.arrayVisualizer);
+        SmoothSort          = new          SmoothSort(this.arrayVisualizer);
+        PoplarHeapSort      = new      PoplarHeapSort(this.arrayVisualizer);
+        TournamentSort      = new      TournamentSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunSelectionSorts.this.runIndividualSort(SelectionSort,       0, array,  128, 0.01);
-        RunSelectionSorts.this.runIndividualSort(DoubleSelectionSort, 0, array,  128, 0.01);
-        RunSelectionSorts.this.runIndividualSort(CycleSort,           0, array,  128, 0.01);
-        RunSelectionSorts.this.runIndividualSort(MaxHeapSort,         0, array, 2048, 1.5);
-        RunSelectionSorts.this.runIndividualSort(MinHeapSort,         0, array, 2048, 1.5);
-        RunSelectionSorts.this.runIndividualSort(FlippedMinHeapSort,  0, array, 2048, 1.5);
-        RunSelectionSorts.this.runIndividualSort(WeakHeapSort,        0, array, 2048, 1);
-        RunSelectionSorts.this.runIndividualSort(TernaryHeapSort,     0, array, 2048, 1);
-        RunSelectionSorts.this.runIndividualSort(SmoothSort,          0, array, 2048, 1.5);
-        RunSelectionSorts.this.runIndividualSort(PoplarHeapSort,      0, array, 2048, 1);
-        RunSelectionSorts.this.runIndividualSort(TournamentSort,      0, array, 2048, 1.5);
+        RunSelectionSorts.this.runIndividualSort(SelectionSort,       0, array,  128, 0.01, false);
+        RunSelectionSorts.this.runIndividualSort(DoubleSelectionSort, 0, array,  128, 0.01, false);
+        RunSelectionSorts.this.runIndividualSort(CycleSort,           0, array,  128, 0.01, false);
+        RunSelectionSorts.this.runIndividualSort(MaxHeapSort,         0, array, 2048, 1.5,  false);
+        RunSelectionSorts.this.runIndividualSort(MinHeapSort,         0, array, 2048, 1.5,  false);
+        RunSelectionSorts.this.runIndividualSort(FlippedMinHeapSort,  0, array, 2048, 1.5,  false);
+        RunSelectionSorts.this.runIndividualSort(WeakHeapSort,        0, array, 2048, 1,    false);
+        RunSelectionSorts.this.runIndividualSort(TernaryHeapSort,     0, array, 2048, 1,    false);
+        RunSelectionSorts.this.runIndividualSort(SmoothSort,          0, array, 2048, 1.5,  false);
+        RunSelectionSorts.this.runIndividualSort(PoplarHeapSort,      0, array, 2048, 1,    false);
+        RunSelectionSorts.this.runIndividualSort(TournamentSort,      0, array, 2048, 1.5,  false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -106,26 +105,26 @@ final public class RunSelectionSorts extends MultipleSortThread {
                         RunSelectionSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Selection Sorts");
+                    arrayVisualizer.setCategory("Selection Sorts");
 
                     RunSelectionSorts.this.executeSortList(array);
                     
                     if(!runAllActive) {
-                        ArrayVisualizer.setCategory("Run Selection Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Selection Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

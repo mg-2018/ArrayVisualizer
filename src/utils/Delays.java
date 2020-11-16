@@ -1,14 +1,9 @@
 package utils;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import main.ArrayVisualizer;
-import templates.JErrorPane;
+import panes.JErrorPane;
 
 /*
  * 
@@ -37,6 +32,8 @@ SOFTWARE.
  */
 
 final public class Delays {
+    private ArrayVisualizer arrayVisualizer;
+    
     private volatile double SLEEPRATIO;
     private volatile boolean SKIPPED;
     
@@ -47,22 +44,18 @@ final public class Delays {
     private volatile double currentDelay;
     
     private DecimalFormat formatter;
-    private DecimalFormatSymbols symbols;
     
     private Sounds Sounds;
     
-    public Delays(ArrayVisualizer ArrayVisualizer) {
-        this.SLEEPRATIO = 1.0;
+    public Delays(ArrayVisualizer arrayVisualizer) {
+        this.arrayVisualizer = arrayVisualizer;
+        
+        this.SLEEPRATIO = 1;
         this.SKIPPED = false;
         this.addamt = 0;
         
-        this.formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        this.symbols = this.formatter.getDecimalFormatSymbols();
-        
-        this.symbols.setGroupingSeparator(',');
-        this.formatter.setDecimalFormatSymbols(this.symbols);
-        
-        this.Sounds = ArrayVisualizer.getSounds();
+        this.formatter = arrayVisualizer.getNumberFormat();
+        this.Sounds = arrayVisualizer.getSounds();
     }
     
     public String displayCurrentDelay() {
@@ -80,8 +73,12 @@ final public class Delays {
         
         return currDelay;
     }
-    public double getCurrentDelay() {
+    //TODO: This is a mess.
+    public double getDisplayedDelay() {
         return this.currentDelay;
+    }
+    public void setDisplayedDelay(double value) {
+        this.currentDelay = value;
     }
     public void setCurrentDelay(double value) {
         this.delay = value;
@@ -95,6 +92,11 @@ final public class Delays {
         if(this.currentDelay < 0) {
             this.delay = this.currentDelay = 0;
         }
+    }
+    //TODO: Remove when sorts receive ArrayVisualizer
+    public void updateDelayForTimeSort(double value) {
+        this.setDisplayedDelay(value);
+        this.Sounds.changeNoteDelayAndFilter((int) value);
     }
     
     public double getSleepRatio() {
@@ -117,18 +119,20 @@ final public class Delays {
             return;
         }
         
-        this.delay += (millis * (1 / this.SLEEPRATIO));
-        this.currentDelay = (millis * (1 / this.SLEEPRATIO));
+        this.delay += (millis * (0.75d / this.SLEEPRATIO));
+        this.currentDelay = (millis * (0.75d / this.SLEEPRATIO));
         
         this.Sounds.changeNoteDelayAndFilter((int) this.currentDelay);
         
         try {
             // With this for loop, you can change the speed of sorts without waiting for the current delay to finish.
             if(!this.SKIPPED) {
+                this.arrayVisualizer.toggleVisualUpdates(false);
                 while(this.delay >= 1) {
                     Thread.sleep(1);
                     this.delay--;
                 }
+                this.arrayVisualizer.toggleVisualUpdates(true);
             }
             else {
                 this.delay = 0;

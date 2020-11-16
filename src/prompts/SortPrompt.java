@@ -6,10 +6,10 @@ package prompts;
 
 import javax.swing.JFrame;
 
+import frames.AppFrame;
 import frames.UtilFrame;
 import main.ArrayVisualizer;
-import templates.Frame;
-import templates.JErrorPane;
+import panes.JErrorPane;
 import threads.RunAllSorts;
 import threads.RunComparisonSort;
 import threads.RunDistributionSort;
@@ -45,7 +45,7 @@ SOFTWARE.
  * @author S630690
  */
 
-final public class SortPrompt extends javax.swing.JFrame implements Frame {
+final public class SortPrompt extends javax.swing.JFrame implements AppFrame {
 
     private static final long serialVersionUID = 1L;
     
@@ -186,12 +186,8 @@ final public class SortPrompt extends javax.swing.JFrame implements Frame {
         new Thread(){
             @Override
             public void run(){
-                try {
-                    RunAllSorts RunAllSorts = new RunAllSorts(ArrayVisualizer);
-                    RunAllSorts.reportAllSorts(array);
-                } catch (Exception e) {
-                    JErrorPane.invokeErrorMessage(e);
-                }
+                RunAllSorts RunAllSorts = new RunAllSorts(ArrayVisualizer);
+                RunAllSorts.reportAllSorts(array);
             }
         }.start();
         UtilFrame.jButton1ResetText();
@@ -204,12 +200,8 @@ final public class SortPrompt extends javax.swing.JFrame implements Frame {
         new Thread(){
             @Override
             public void run(){
-                try {
-                    RunDistributionSort sortThread = new RunDistributionSort(ArrayVisualizer);
-                    sortThread.ReportDistributiveSort(array, selection);
-                } catch (Exception e) {
-                    JErrorPane.invokeErrorMessage(e);
-                }
+                RunDistributionSort sortThread = new RunDistributionSort(ArrayVisualizer);
+                sortThread.ReportDistributionSort(array, selection);
             }
         }.start();
         UtilFrame.jButton1ResetText();

@@ -3,8 +3,7 @@ package threads;
 import java.util.ArrayList;
 
 import main.ArrayVisualizer;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
+import panes.JErrorPane;
 
 /*
  * 
@@ -33,24 +32,24 @@ SOFTWARE.
  */
 
 final public class RunAllSorts {
-    private ArrayVisualizer ArrayVisualizer;
+    private ArrayVisualizer arrayVisualizer;
     private ArrayList<MultipleSortThread> allSortThreads;
     
-    public RunAllSorts(ArrayVisualizer ArrayVisualizer) {
-        this.ArrayVisualizer = ArrayVisualizer;
+    public RunAllSorts(ArrayVisualizer arrayVisualizer) {
+        this.arrayVisualizer = arrayVisualizer;
         this.allSortThreads = new ArrayList<>();
-        this.allSortThreads.add(new RunExchangeSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunSelectionSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunInsertionSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunMergeSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunDistributionSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunConcurrentSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunHybridSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunMiscellaneousSorts(ArrayVisualizer));
-        this.allSortThreads.add(new RunImpracticalSorts(ArrayVisualizer));
+        this.allSortThreads.add(new RunExchangeSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunSelectionSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunInsertionSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunMergeSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunDistributionSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunConcurrentSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunHybridSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunMiscellaneousSorts(arrayVisualizer));
+        this.allSortThreads.add(new RunImpracticalSorts(arrayVisualizer));
     }
 
-    public void reportAllSorts(int[] array) throws Exception {
+    public void reportAllSorts(int[] array) {
         int totalSortCount = 0;
         for(MultipleSortThread category : this.allSortThreads) {
             totalSortCount += category.getSortCount();
@@ -60,14 +59,14 @@ final public class RunAllSorts {
             int currentSort = 1;
             for(MultipleSortThread thread : this.allSortThreads) {
                 thread.reportAllSorts(array, currentSort, totalSortCount);
-                this.ArrayVisualizer.getSortingThread().join();
+                this.arrayVisualizer.getSortingThread().join();
                 currentSort += thread.getCategoryCount();
             }
         } catch (Exception e) {
             JErrorPane.invokeErrorMessage(e);
         }
         
-        this.ArrayVisualizer.setCategory("Run All Sorts");
-        this.ArrayVisualizer.setHeading("Finished!!");
+        this.arrayVisualizer.setCategory("Run All Sorts");
+        this.arrayVisualizer.setHeading("Finished!!");
     }
 }

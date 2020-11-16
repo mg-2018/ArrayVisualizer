@@ -1,23 +1,22 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.BinaryMergeSort;
-import sorts.BottomUpMergeSort;
-import sorts.BranchedPDQSort;
-import sorts.BranchlessPDQSort;
-import sorts.CocktailMergeSort;
-import sorts.GrailSort;
-import sorts.HybridCombSort;
-import sorts.IntroCircleSort;
-import sorts.IntroSort;
-import sorts.OptimizedDualPivotQuickSort;
-import sorts.SqrtSort;
-import sorts.TimSort;
-import sorts.WeaveMergeSort;
-import sorts.WikiSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.hybrid.BinaryMergeSort;
+import sorts.hybrid.OptimizedBottomUpMergeSort;
+import sorts.hybrid.BranchedPDQSort;
+import sorts.hybrid.BranchlessPDQSort;
+import sorts.hybrid.CocktailMergeSort;
+import sorts.hybrid.GrailSort;
+import sorts.hybrid.HybridCombSort;
+import sorts.hybrid.IntroCircleSort;
+import sorts.hybrid.IntroSort;
+import sorts.hybrid.OptimizedDualPivotQuickSort;
+import sorts.hybrid.SqrtSort;
+import sorts.hybrid.TimSort;
+import sorts.hybrid.WeaveMergeSort;
+import sorts.hybrid.WikiSort;
+import sorts.templates.Sort;
 import utils.Shuffles;
 
 /*
@@ -57,57 +56,57 @@ final public class RunHybridSorts extends MultipleSortThread {
     private Sort GrailSort;
     private Sort SqrtSort;
     private Sort IntroSort;
-    private Sort BottomUpMergeSort;
+    private Sort OptimizedBottomUpMergeSort;
     private Sort OptimizedDualPivotQuickSort;
     private Sort BranchedPDQSort;
     private Sort BranchlessPDQSort;
     
-    public RunHybridSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
+    public RunHybridSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
         this.sortCount = 14;
         this.categoryCount = this.sortCount;
         
-        HybridCombSort              = new              HybridCombSort(Delays, Highlights, Reads, Writes);
-        IntroCircleSort             = new             IntroCircleSort(Delays, Highlights, Reads, Writes);
-        BinaryMergeSort             = new             BinaryMergeSort(Delays, Highlights, Reads, Writes);
-        WeaveMergeSort              = new              WeaveMergeSort(Delays, Highlights, Reads, Writes);
-        TimSort                     = new                     TimSort(Delays, Highlights, Reads, Writes);
-        CocktailMergeSort           = new           CocktailMergeSort(Delays, Highlights, Reads, Writes);
-        WikiSort                    = new                    WikiSort(Delays, Highlights, Reads, Writes);
-        GrailSort                   = new                   GrailSort(Delays, Highlights, Reads, Writes);
-        SqrtSort                    = new                    SqrtSort(Delays, Highlights, Reads, Writes);
-        IntroSort                   = new                   IntroSort(Delays, Highlights, Reads, Writes);
-        BottomUpMergeSort           = new           BottomUpMergeSort(Delays, Highlights, Reads, Writes);
-        OptimizedDualPivotQuickSort = new OptimizedDualPivotQuickSort(Delays, Highlights, Reads, Writes);
-        BranchedPDQSort             = new             BranchedPDQSort(Delays, Highlights, Reads, Writes);
-        BranchlessPDQSort           = new           BranchlessPDQSort(Delays, Highlights, Reads, Writes);
+        HybridCombSort              = new              HybridCombSort(this.arrayVisualizer);
+        IntroCircleSort             = new             IntroCircleSort(this.arrayVisualizer);
+        BinaryMergeSort             = new             BinaryMergeSort(this.arrayVisualizer);
+        WeaveMergeSort              = new              WeaveMergeSort(this.arrayVisualizer);
+        TimSort                     = new                     TimSort(this.arrayVisualizer);
+        CocktailMergeSort           = new           CocktailMergeSort(this.arrayVisualizer);
+        WikiSort                    = new                    WikiSort(this.arrayVisualizer);
+        GrailSort                   = new                   GrailSort(this.arrayVisualizer);
+        SqrtSort                    = new                    SqrtSort(this.arrayVisualizer);
+        IntroSort                   = new                   IntroSort(this.arrayVisualizer);
+        OptimizedBottomUpMergeSort  = new  OptimizedBottomUpMergeSort(this.arrayVisualizer);
+        OptimizedDualPivotQuickSort = new OptimizedDualPivotQuickSort(this.arrayVisualizer);
+        BranchedPDQSort             = new             BranchedPDQSort(this.arrayVisualizer);
+        BranchlessPDQSort           = new           BranchlessPDQSort(this.arrayVisualizer);
     }
     
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunHybridSorts.this.runIndividualSort(HybridCombSort,              0, array, 1024, 1);
-        RunHybridSorts.this.runIndividualSort(IntroCircleSort,             0, array, 1024, 1);
-        RunHybridSorts.this.runIndividualSort(BinaryMergeSort,             0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(WeaveMergeSort,              0, array, 2048, ArrayManager.getShuffle() == Shuffles.RANDOM ? 1.25 : 6);
-        RunHybridSorts.this.runIndividualSort(TimSort,                     0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(CocktailMergeSort,           0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(WikiSort,                    0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(GrailSort,                   0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(SqrtSort,                    0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(IntroSort,                   0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(BottomUpMergeSort,           0, array, 2048, 1);
-        RunHybridSorts.this.runIndividualSort(OptimizedDualPivotQuickSort, 0, array, 2048, 0.75);
-        RunHybridSorts.this.runIndividualSort(BranchedPDQSort,             0, array, 2048, 0.75);
-        RunHybridSorts.this.runIndividualSort(BranchlessPDQSort,           0, array, 2048, 0.75);
+        RunHybridSorts.this.runIndividualSort(HybridCombSort,              0, array, 1024, 1,    false);
+        RunHybridSorts.this.runIndividualSort(IntroCircleSort,             0, array, 1024, 1,    false);
+        RunHybridSorts.this.runIndividualSort(BinaryMergeSort,             0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(WeaveMergeSort,              0, array, 2048, arrayManager.getShuffle() == Shuffles.RANDOM ? 1.65 : 6.5, false);
+        RunHybridSorts.this.runIndividualSort(TimSort,                     0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(CocktailMergeSort,           0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(WikiSort,                    0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(GrailSort,                   0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(SqrtSort,                    0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(IntroSort,                   0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(OptimizedBottomUpMergeSort,  0, array, 2048, 1,    false);
+        RunHybridSorts.this.runIndividualSort(OptimizedDualPivotQuickSort, 0, array, 2048, 0.75, false);
+        RunHybridSorts.this.runIndividualSort(BranchedPDQSort,             0, array, 2048, 0.75, false);
+        RunHybridSorts.this.runIndividualSort(BranchlessPDQSort,           0, array, 2048, 0.75, false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -119,26 +118,26 @@ final public class RunHybridSorts extends MultipleSortThread {
                         RunHybridSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Hybrid Sorts");
+                    arrayVisualizer.setCategory("Hybrid Sorts");
 
                     RunHybridSorts.this.executeSortList(array);
                     
                     if(!runAllActive) {
-                        ArrayVisualizer.setCategory("Run Hybrid Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Hybrid Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }

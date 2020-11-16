@@ -43,7 +43,7 @@ public enum VisualStyles {
             ArrayVisualizer.getVisuals()[1].drawVisual(array, ArrayVisualizer, Renderer, Highlights);
         }
     },
-    HOOPS {
+    CUSTOMIMAGE {
         @Override
         public void drawVisual(int[] array, ArrayVisualizer ArrayVisualizer, Renderer Renderer, Highlights Highlights) {
             ArrayVisualizer.getVisuals()[2].drawVisual(array, ArrayVisualizer, Renderer, Highlights);

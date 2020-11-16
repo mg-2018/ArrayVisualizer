@@ -1,9 +1,8 @@
 package utils;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
+
+import main.ArrayVisualizer;
 
 /*
  * 
@@ -33,7 +32,6 @@ SOFTWARE.
 
 final public class Timer {
     private DecimalFormat formatter;
-    private DecimalFormatSymbols symbols;
     
     private volatile String minuteFormat;
     private volatile String secondFormat;
@@ -47,17 +45,13 @@ final public class Timer {
     private long timeStart;
     private long timeStop;
     
-    public Timer() {
+    public Timer(ArrayVisualizer ArrayVisualizer) {
         this.REALTIMER = true;
         
         this.timeStart = 0;
         this.timeStop = 0;
         
-        this.formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        this.symbols = this.formatter.getDecimalFormatSymbols();
-        
-        this.symbols.setGroupingSeparator(',');
-        this.formatter.setDecimalFormatSymbols(this.symbols);
+        this.formatter = ArrayVisualizer.getNumberFormat();
     }
     
     public String getVisualTime() {
@@ -75,17 +69,19 @@ final public class Timer {
     }
     
     public String getRealTime() {
+        double realTime = this.realTimer * 1e-6d;
+        
         if(!this.REALTIMER) {
             return "Disabled";
         }
-        else if(this.realTimer == 0) {
+        else if(realTime == 0) {
             if(this.timerEnabled) return "0.000ms";
             else                  return "---ms";
         }
-        else if(this.realTimer < 0.001)      return "< 0.001ms";
-        else if(this.realTimer >= 60000.000) return "~" + this.formatter.format((int) (this.realTimer / 60000)) + "m" + (int) ((this.realTimer % 60000) / 1000) + "s";
-        else if(this.realTimer >= 1000.000)  return "~" + this.formatter.format(this.realTimer / 1000) + "s";
-        else                                 return "~" + this.formatter.format(this.realTimer) + "ms";
+        else if(realTime < 0.001)      return "< 0.001ms";
+        else if(realTime >= 60000.000) return "~" + this.formatter.format((int) (realTime / 60000)) + "m" + (int) ((realTime % 60000) / 1000) + "s";
+        else if(realTime >= 1000.000)  return "~" + this.formatter.format(realTime / 1000) + "s";
+        else                                 return "~" + this.formatter.format(realTime) + "ms";
     }   
     
     public void toggleRealTimer(boolean Bool) {
@@ -112,7 +108,7 @@ final public class Timer {
     
     public void stopLap() {
         this.timeStop = System.nanoTime();
-        if(this.timerEnabled) this.realTimer += (timeStop - timeStart) * 1e-6d;
+        if(this.timerEnabled) this.realTimer += timeStop - timeStart;
     }
 
     void manualAddTime(long milliseconds) {

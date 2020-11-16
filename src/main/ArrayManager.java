@@ -1,8 +1,6 @@
 package main;
 
-import javax.swing.JOptionPane;
-
-import templates.JErrorPane;
+import panes.JErrorPane;
 import utils.Delays;
 import utils.Highlights;
 import utils.Shuffles;
@@ -37,7 +35,8 @@ SOFTWARE.
 final public class ArrayManager {
     private int[] presortedArray;
     private utils.Shuffles[] shuffleTypes;
-    private String[] shuffleIDs = {"Randomly", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted"};
+    private String[] shuffleIDs = {"Randomly", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted", "Smaller Runs",
+    		"Max Heapify", "Poplar Heapify", "Pipe Organ", "Inv. Pipe Organ"};
     
     private volatile boolean MUTABLE;
 
@@ -72,7 +71,7 @@ final public class ArrayManager {
     public void initializeArray(int[] array) {
         int equalFactor = ArrayVisualizer.getEqualItems();
         for (int i = 0; i < array.length; i++) {
-            array[i] = (i / equalFactor) * equalFactor;
+            array[i] = ((i / equalFactor) * equalFactor);
         }
     }
     
@@ -100,7 +99,7 @@ final public class ArrayManager {
     }
     
     public void shuffleArray(int[] array, int currentLen, ArrayVisualizer ArrayVisualizer) {
-        this.initializeArray(array);
+        if(Shuffles != Shuffles.ALREADY) this.initializeArray(array);
 
         String tmp = ArrayVisualizer.getHeading();
         ArrayVisualizer.setHeading("Shuffling...");
@@ -110,7 +109,9 @@ final public class ArrayManager {
         if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive()) {
             double sleepRatio;
             
+            //TODO: Replace with continuous function
             switch(ArrayVisualizer.getLogBaseTwoOfLength()) {
+            case 15: sleepRatio = 32d;  break;
             case 14: sleepRatio = 16d;  break;
             case 13: sleepRatio = 8d;   break;
             case 12: sleepRatio = 4d;   break;
@@ -131,6 +132,7 @@ final public class ArrayManager {
         }
         
         Shuffles.shuffleArray(array, this.ArrayVisualizer, Delays, Highlights, Writes);
+        this.ArrayVisualizer.setShadowArray();
         
         Delays.setSleepRatio(speed);
         

@@ -1,10 +1,9 @@
 package threads;
 
 import main.ArrayVisualizer;
-import sorts.PancakeSort;
-import templates.JErrorPane;
-import templates.MultipleSortThread;
-import templates.Sort;
+import panes.JErrorPane;
+import sorts.misc.PancakeSort;
+import sorts.templates.Sort;
 
 /*
  * 
@@ -35,26 +34,26 @@ SOFTWARE.
 final public class RunMiscellaneousSorts extends MultipleSortThread {
     private Sort PancakeSort;
     
-    public RunMiscellaneousSorts(ArrayVisualizer ArrayVisualizer) {
-        super(ArrayVisualizer);
+    public RunMiscellaneousSorts(ArrayVisualizer arrayVisualizer) {
+        super(arrayVisualizer);
         this.sortCount = 1;
         this.categoryCount = this.sortCount;
         
-        PancakeSort = new PancakeSort(Delays, Highlights, Reads, Writes);
+        PancakeSort = new PancakeSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
-        RunMiscellaneousSorts.this.runIndividualSort(PancakeSort, 0, array, 128, 0.015);
+        RunMiscellaneousSorts.this.runIndividualSort(PancakeSort, 0, array, 128, 0.015, false);
     }
     
     @Override
     protected synchronized void runThread(int[] array, int current, int total, boolean runAllActive) throws Exception {
-        if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive())
+        if(arrayVisualizer.getSortingThread() != null && arrayVisualizer.getSortingThread().isAlive())
             return;
 
         Sounds.toggleSound(true);
-        ArrayVisualizer.setSortingThread(new Thread() {
+        arrayVisualizer.setSortingThread(new Thread() {
             @Override
             public void run() {
                 try{
@@ -66,26 +65,26 @@ final public class RunMiscellaneousSorts extends MultipleSortThread {
                         RunMiscellaneousSorts.this.sortNumber = 1;
                     }
                     
-                    ArrayManager.toggleMutableLength(false);
+                    arrayManager.toggleMutableLength(false);
 
-                    ArrayVisualizer.setCategory("Miscellaneous Sorts");
+                    arrayVisualizer.setCategory("Miscellaneous Sorts");
 
                     RunMiscellaneousSorts.this.executeSortList(array);
                     
                     if(!runAllActive) {
-                        ArrayVisualizer.setCategory("Run Miscellaneous Sorts");
-                        ArrayVisualizer.setHeading("Done");
+                        arrayVisualizer.setCategory("Run Miscellaneous Sorts");
+                        arrayVisualizer.setHeading("Done");
                     }
                     
-                    ArrayManager.toggleMutableLength(true);
+                    arrayManager.toggleMutableLength(true);
                 }
                 catch (Exception e) {
                     JErrorPane.invokeErrorMessage(e);
                 }
                 Sounds.toggleSound(false);
-                ArrayVisualizer.setSortingThread(null);
+                arrayVisualizer.setSortingThread(null);
             }
         });
-        ArrayVisualizer.runSortingThread();
+        arrayVisualizer.runSortingThread();
     }
 }
