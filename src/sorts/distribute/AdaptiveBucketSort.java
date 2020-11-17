@@ -60,6 +60,36 @@ final public class AdaptiveBucketSort extends Sort {
 		return max;
 	}
 	
+	private int getMin(int[] array, int start, int end) {
+		int min = array[start];
+		for(int i=start; i<end; i++)
+		{
+			if(array[i] < min) min = array[i];
+		}
+		
+		return min;
+	}
+	
+	private void MiniCountingSort(int[] array, int start, int end) {
+		int i, j=start;
+		
+		int max = getMax(array, start, end);
+		int min = getMin(array, start, end);
+		int range = (max-min)+1;
+		
+		int[] counts = new int[range];
+		for(i=start; i<end; i++) {
+			Writes.write(counts, array[i]-min, counts[array[i]-min]+1, 0.75, false, true);
+			Highlights.markArray(1, i);
+		}
+		
+		for(i=0; i<range; i++) {
+			while(counts[i]-- > 0) {
+				Writes.write(array, j++, i+min, 0.75, true, false);
+			}
+		}
+	}
+	
 	private void Sort(int[] array, int sortLength, int base) {
 		int max = getMax(array, 0, sortLength-1);
 		int buckets = (max/base) + 2;
@@ -68,30 +98,42 @@ final public class AdaptiveBucketSort extends Sort {
 		int[] offset = new int[buckets];
 		int[] offsetmemory = new int[buckets];
 		
+		// Step 1: write entire elements in auxiliary array and count the bucket offset
 		for(int i=0; i<sortLength; i++) {
 			Writes.write(aux, i, array[i], 0.75, true, true);
 			offset[array[i]/base + 1]++;
 		}
 		
-		for(int i=0; i<buckets; i++) {
-			if(i != 0) offset[i] += offset[i-1];
-			System.out.printf("%d ", offset[i]);
+		// Step 2: calculate the bucket offset by adding offset count one by one
+		for(int i=1; i<buckets; i++) {
+			offset[i] += offset[i-1];
 		}
 		
+		// Step 3: overwrite elements in auxiliary array to each corresponding bucket
 		for(int i=0; i<sortLength; i++) {
 			int temp = aux[i]/base;
 			Writes.write(array, offset[temp]+offsetmemory[temp], aux[i], 0.75, true, false);
 			offsetmemory[temp]++;
 		}
 		
+		// Step 4: if base <= 16 run insertion on entire array...
 		if(base <= 16)
 			ins.customInsertSort(array, 0, sortLength, 0.4, false);
+		
+		// ..else run 'counting sort' in each bucket
+		else {
+			for(int i=0; i<buckets-1; i++)
+			{
+				if(offset[i+1]-offset[i] == 0) continue;
+				
+				else MiniCountingSort(array, offset[i], offset[i+1]);
+			}
+		}
 	}
 	
 	@Override
 	public void runSort(int[] array, int sortLength, int bucketCount) throws Exception {
 		int base = bucketCount;
-		
 		this.Sort(array, sortLength, base);
 	}
 }

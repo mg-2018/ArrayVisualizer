@@ -550,8 +550,11 @@ public enum Shuffles {
             }
         }
 	},
-            
-            /*
+	
+	TAIL {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             int j = 0, k = currentLen;
             int[] temp = new int[currentLen];
             
@@ -576,7 +579,8 @@ public enum Shuffles {
             }
             
         }
-        */
+	},
+	
 	INVPIPE {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
