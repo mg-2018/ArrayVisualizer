@@ -591,6 +591,15 @@ public enum Shuffles {
                 value += 2;
             }
         }
+	},
+	
+	PUSH1 {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int first = ArrayVisualizer.getCurrentLength();
+			for(int i = first-1; i > 0; i--)
+				Writes.swap(array, i, i-1, 0.75, true, false);
+		}
 	};
         
         /*
