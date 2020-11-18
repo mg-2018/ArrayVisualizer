@@ -217,7 +217,10 @@ public enum Shuffles {
             }
         }
         */
-            /*
+    HEAD {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+            int currentLen = ArrayVisualizer.getCurrentLength();
             int j = 0, k = currentLen;
             int[] temp = new int[currentLen];
             
@@ -244,7 +247,7 @@ public enum Shuffles {
             GrailSort grailSort = new GrailSort(ArrayVisualizer);
             grailSort.rotateLength(array, k, currentLen - k);
         }
-            */
+    },
             
             /*
             Writes.changeReversals(1);

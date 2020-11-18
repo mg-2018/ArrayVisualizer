@@ -1,6 +1,5 @@
 package sorts.distribute;
 
-import java.util.Arrays;
 import main.ArrayVisualizer;
 import sorts.templates.Sort;
 import sorts.insert.InsertionSort;
@@ -86,6 +85,7 @@ final public class AdaptiveBucketSort extends Sort {
 		for(i=0; i<range; i++) {
 			while(counts[i]-- > 0) {
 				Writes.write(array, j++, i+min, 0.75, true, false);
+				Writes.changeAuxWrites(1);
 			}
 		}
 	}
