@@ -109,7 +109,7 @@ final public class ArrayManager {
         if(ArrayVisualizer.getSortingThread() != null && ArrayVisualizer.getSortingThread().isAlive()) {
             double sleepRatio;
             
-            // this IS continuous function!!
+            //TODO: sound lags when number is too small and delay is cancelled right after shuffle
             sleepRatio = currentLen/1024d;
             
             Delays.setSleepRatio(sleepRatio);

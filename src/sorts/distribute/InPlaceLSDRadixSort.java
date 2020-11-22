@@ -30,6 +30,8 @@ SOFTWARE.
  */
 
 final public class InPlaceLSDRadixSort extends Sort {
+	private int BASE;
+	
     public InPlaceLSDRadixSort(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
         
@@ -48,7 +50,8 @@ final public class InPlaceLSDRadixSort extends Sort {
 
     @Override
     public void runSort(int[] array, int sortLength, int bucketCount) throws Exception {
-        this.setRunAllSortsName("In-Place LSD Radix Sort, Base " + bucketCount);
+    	BASE = bucketCount;
+        this.setRunAllSortsName("In-Place LSD Radix Sort, Base " + BASE);
         
         int pos = 0;
         int[] vregs = new int[bucketCount-1];

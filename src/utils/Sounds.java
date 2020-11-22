@@ -144,11 +144,11 @@ final public class Sounds {
                                 int pitchminor = (int)((pitch-((int)pitch))*8192d)+8192;
 
                                 int vel = (int) (Math.pow(PITCHMAX - pitchmajor, 2d) * (Math.pow(noteCount, -0.25)) * 64d * SOUNDMUL) / 2; //I'VE SOLVED IT!!
-
+                                
                                 if(SOUNDMUL >= 1 && vel < 256) {
                                     vel *= vel;
                                 }
-
+								
                                 channels[voice].noteOn(pitchmajor, vel);
                                 channels[voice].setPitchBend(pitchminor);
                                 channels[voice].controlChange(REVERB, 10);

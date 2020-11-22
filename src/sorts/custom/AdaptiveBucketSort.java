@@ -1,4 +1,4 @@
-package sorts.distribute;
+package sorts.custom;
 
 import main.ArrayVisualizer;
 import sorts.templates.Sort;

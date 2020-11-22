@@ -32,6 +32,8 @@ SOFTWARE.
  */
 
 final public class MSDRadixSort extends Sort {
+	private int BASE;
+	
     public MSDRadixSort(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
         
@@ -87,6 +89,8 @@ final public class MSDRadixSort extends Sort {
     
     @Override
     public void runSort(int[] array, int sortLength, int bucketCount) throws Exception {
+    	BASE = bucketCount;
+    	this.setRunAllSortsName("Most Significant Digit Radix Sort, Base " + BASE);
         int highestpower = Reads.analyzeMaxLog(array, sortLength, bucketCount, 0.5, true);
         
         radixMSD(array, sortLength, 0, sortLength, bucketCount, highestpower);
