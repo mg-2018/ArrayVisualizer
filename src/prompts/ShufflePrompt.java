@@ -144,7 +144,7 @@ final public class ShufflePrompt extends javax.swing.JFrame implements AppFrame 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) throws Exception {//GEN-FIRST:event_jList1ValueChanged
         // TODO add your handling code here:
         int selection = jList1.getSelectedIndex();
-        if(selection >= 0 && selection <= 12)
+        if(selection >= 0 && selection <= 20)
         	ArrayManager.setShuffle(ArrayManager.getShuffles()[selection]);
         
         UtilFrame.jButton6ResetText();

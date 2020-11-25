@@ -138,6 +138,7 @@ public enum Shuffles {
             }
         }
     },
+    
     RUNS {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -152,7 +153,10 @@ public enum Shuffles {
         }
     },
             
-            /*
+    TRI {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+            int currentLen = ArrayVisualizer.getCurrentLength();
             int n;
             for(n = 0; (1 << n) < currentLen; n++);
             
@@ -206,7 +210,7 @@ public enum Shuffles {
             else 
                 return concat(circleGen(n-1, k, Writes), addToAll(circleGen(n-1, k-1, Writes), 1 << (n-1), Writes), Writes);
         }
-        */
+    },
             /*
           //TODO: Consider separate method
             for(int i = 1; i < currentLen; i += 2){
@@ -261,7 +265,10 @@ public enum Shuffles {
             }
         }
         */
-            /*
+    PERLIN1 {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+            int currentLen = ArrayVisualizer.getCurrentLength();
             int[] perlinNoise = new int[currentLen];
 
             float step = 1f / currentLen;
@@ -302,7 +309,7 @@ public enum Shuffles {
                 Writes.write(array, i, perlinNoise[i], 1, true, false);
             }
         }
-        */
+    },
     
             /*
             for(int i = 0; i < currentLen; i++) {
@@ -311,49 +318,7 @@ public enum Shuffles {
             }
         }
         */
-            
-            /*
-            int[] perlinNoise = new int[currentLen];
 
-            float step = 1f / currentLen;
-            float randomStart = (float) (Math.random() * currentLen);
-            int octave = (int) (Math.log(currentLen) / Math.log(2));
-
-            for(int i = 0; i < currentLen; i++) {
-                int value = (int) (PerlinNoise.returnFracBrownNoise(randomStart, octave) * currentLen);
-                Writes.write(perlinNoise, i, value, 0.333, true, true);
-                randomStart += step;
-            }
-
-            int minimum = Integer.MAX_VALUE;
-            for(int i = 0; i < currentLen; i++) {
-                if(perlinNoise[i] < minimum) {
-                    minimum = perlinNoise[i];
-                }
-            }
-            minimum = Math.abs(minimum);
-            for(int i = 0; i < currentLen; i++) {
-                Writes.write(perlinNoise, i, perlinNoise[i] + minimum, 0.333, true, true);
-            }
-
-            double maximum = Double.MIN_VALUE;
-            for(int i = 0; i < currentLen; i++) {
-                if(perlinNoise[i] > maximum) {
-                    maximum = perlinNoise[i];
-                }
-            }
-            double scale = currentLen / maximum;
-            if(scale < 1.0 || scale > 1.8) {
-                for(int i = 0; i < currentLen; i++) {
-                    Writes.write(perlinNoise, i, (int) (perlinNoise[i] * scale), 0.333, true, true);
-                }
-            }
-
-            for(int i = 0; i < currentLen; i++) {
-                Writes.write(array, i, perlinNoise[i], 1, true, false);
-            }
-        }
-        */
     HEAPIFY {
             @Override
             public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -362,13 +327,18 @@ public enum Shuffles {
             	heapSort.makeHeap(array, 0, currentLen, 1);
             }
     	},
-            /*
+    
+    INTERLACE {
+            @Override
+            public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+            	int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen / 2; i += 2) {
                 Writes.swap(array, i, currentLen - i - 1, 0, true, false);
                 if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
             }
         }
-            */
+    },
+    
 	POPLARIFY {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -457,7 +427,10 @@ public enum Shuffles {
             }
             */
             
-            /*
+	PAIRWISE {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             Reads Reads = ArrayVisualizer.getReads();
             
             //shuffle
@@ -497,10 +470,14 @@ public enum Shuffles {
                     j+=2;
                     Writes.write(temp, i, temp[i] - 1, 0, false, true);
                 }
-            */
+            }
+        }
+	},
 
-                /*
-            int currentLen = ArrayVisualizer.getCurrentLength();
+	BELL {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             double step = 8d / currentLen;
             double position = -4;
             int constant = 1264;
@@ -519,9 +496,13 @@ public enum Shuffles {
                 position += step;
                 
             }
-            */
+        }
+	},
             
-            /*
+	UNK {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             int offset = 0;
             for(int i = 0; i < 4; i++) {
                 int value = 0;
@@ -531,13 +512,19 @@ public enum Shuffles {
                 }
                 offset += (currentLen / 4);
             }
-            */
+        }
+	},
             
-            /*
+	ROTATE {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen / 2; i++) {
                 Writes.swap(array, i, i + (currentLen / 2), 2, true, false);
             }
-            */
+        }
+	},
+        
 	PIPE {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -600,6 +587,41 @@ public enum Shuffles {
         }
 	},
 	
+	// fly straight dangit (OEIS A133058)
+	FSD {
+		@Override
+		public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+			int fsdmax;
+			int currentLen = ArrayVisualizer.getCurrentLength();
+			int[] fsdseq = new int[currentLen];
+			for(int i = 0; i < currentLen; i++) {
+				if(i <= 1) fsdseq[i] = 1;
+				else {
+					if(this.gcd(fsdseq[i-1], i) == 1)
+						fsdseq[i] = fsdseq[i-1] + i + 1;
+					
+					else
+						fsdseq[i] = fsdseq[i-1]/gcd(fsdseq[i-1], i);
+				}
+				Highlights.markArray(1, i);
+				Delays.sleep(0.333);
+				Writes.changeAuxWrites(1);
+			}
+			
+			fsdmax = getMax(fsdseq, currentLen);
+			for(int i = 0; i < currentLen; i++) {
+				fsdseq[i] /= (fsdmax/currentLen)+1;
+				Highlights.markArray(1, i);
+				Delays.sleep(0.333);
+				Writes.changeAuxWrites(1);
+			}
+			
+			for(int i = 0; i < currentLen; i++) {
+				Writes.write(array, i, fsdseq[i], 1, true, false);
+			}
+		}
+	},
+	
 	PUSH1 {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -632,6 +654,42 @@ public enum Shuffles {
             }
         }
         */
-
+	public int gcd(int n1, int n2) {
+		int gcd, temp;
+		int g1 = n1;
+		int g2 = n2;
+		if(g1 < g2)
+		{
+			temp = g1;
+			g1 = g2;
+			g2 = temp;
+		}
+		if(g2 == 0)
+			gcd = g1;
+			
+		else
+		{
+			while(g1%g2 != 0)
+			{
+				g1 %= g2;
+				temp = g1;
+				g1 = g2;
+				g2 = temp;
+			}
+			gcd = g2;
+		}
+		
+		return gcd;
+	}
+	
+	public int getMax(int[] array, int length) {
+		int max = array[0];
+		for(int i = 0; i < length; i++) {
+			if(array[i] > max) max = array[i];
+		}
+		
+		return max;
+	}
+	
     public abstract void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes);
 }

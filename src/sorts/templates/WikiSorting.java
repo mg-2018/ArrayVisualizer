@@ -911,7 +911,7 @@ final public class WikiSorting {
                         // swap the first value of each A block with the value in buffer1
                         int indexA = buffer1.start;
                         for (index = firstA.end; index < blockA.end; index += block_size)  {
-                            Writes.swap(array, indexA, index, 10, true, false);
+                            Writes.swap(array, indexA, index, 3, true, false);
                             indexA++;
                         }
 

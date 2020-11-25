@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import main.ArrayVisualizer;
 
 final public class Statistics {
+	private int similar;
     private String sortCategory;
     private String sortHeading;
     private String sortExtraHeading;
@@ -29,11 +30,18 @@ final public class Statistics {
     }
 
     public void updateStats(ArrayVisualizer ArrayVisualizer) {
+    	this.similar = (ArrayVisualizer.getCurrentLength() - 1) / ArrayVisualizer.getEqualItems() + 1;
+    	
         this.sortCategory = ArrayVisualizer.getCategory();
         this.sortHeading = ArrayVisualizer.getHeading();
         this.sortExtraHeading = ArrayVisualizer.getExtraHeading();
-        this.arrayLength = this.formatter.format(ArrayVisualizer.getCurrentLength()) + " Numbers";
-                //+ ", " + this.formatter.format(ArrayVisualizer.getCurrentLength() / ArrayVisualizer.getEqualItems()) + " Unique";
+        if(this.similar == 1) {
+        	this.arrayLength = this.formatter.format(ArrayVisualizer.getCurrentLength()) + " Numbers, All similar";
+        }
+        else {
+        	this.arrayLength = this.formatter.format(ArrayVisualizer.getCurrentLength()) + " Numbers"
+                    + ", " + this.formatter.format(this.similar) + " Unique";
+        }
         
         this.sortDelay = "Delay: " + ArrayVisualizer.getDelays().displayCurrentDelay() + "ms";
         this.visualTime = "Visual Time: " + ArrayVisualizer.getTimer().getVisualTime();
