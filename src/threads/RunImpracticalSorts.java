@@ -81,7 +81,7 @@ final public class RunImpracticalSorts extends MultipleSortThread {
         RunImpracticalSorts.this.runIndividualSort(BubbleBogoSort,   0, array, 32,  0.01,   true);
         RunImpracticalSorts.this.runIndividualSort(LessBogoSort,     0, array, 16,  0.0025, true);
         RunImpracticalSorts.this.runIndividualSort(CocktailBogoSort, 0, array, 16,  0.0025, true);
-        RunImpracticalSorts.this.runIndividualSort(BogoSort,         0, array,  8,  1,      true);
+        RunImpracticalSorts.this.runIndividualSort(BogoSort,         0, array,  8,  0.2,    true);
         RunImpracticalSorts.this.runIndividualSort(BogoBogoSort,     0, array,  6,  1,      true);
         Sounds.toggleSofterSounds(false);
     }

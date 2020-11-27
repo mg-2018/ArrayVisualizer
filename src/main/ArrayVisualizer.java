@@ -287,12 +287,15 @@ final public class ArrayVisualizer {
         this.mainRender.drawString(this.statSnapshot.getReversalCount(),   xOffset, (int) (windowRatio * 235) + yOffset);
         this.mainRender.drawString(this.statSnapshot.getMainWriteCount(),  xOffset, (int) (windowRatio * 275) + yOffset);
         this.mainRender.drawString(this.statSnapshot.getAuxWriteCount(),   xOffset, (int) (windowRatio * 300) + yOffset);
+        this.mainRender.drawString(this.statSnapshot.getRuns(),            xOffset, (int) (windowRatio * 325) + yOffset);
     }
     
     public void toggleVisualUpdates(boolean bool) {
         this.updateVisuals = bool;
     }
-    
+    public int[] getArray() {
+        return this.array;
+    }
     public int[] getShadowArray() {
         return this.shadowArray;
     }

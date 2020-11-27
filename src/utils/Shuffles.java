@@ -48,7 +48,6 @@ public enum Shuffles {
             for(int i = 0; i < currentLen; i++){
                 int randomIndex = (int) (Math.random() * (currentLen - i)) + i;
                 Writes.swap(array, i, randomIndex, 0, true, false);
-                Writes.write(ArrayVisualizer.getShadowArray(), array[i], i, 0, false, false);
                 
                 if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
             }
@@ -59,6 +58,29 @@ public enum Shuffles {
             */
         }
     },
+    
+    BIASED {
+        // added biased shuffle because yes
+        
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+            int currentLen = ArrayVisualizer.getCurrentLength();
+            
+            //TODO: Consider separate method
+            for(int i = 0; i < currentLen; i++){
+                int randomIndex = (int) (Math.random() * currentLen);
+                Writes.swap(array, i, randomIndex, 0, true, false);
+                
+                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
+            }
+            
+            /*
+            CircleSort circleSort = new CircleSort(ArrayVisualizer);
+            circleSort.singleRoutine(array, currentLen);
+            */
+        }
+    },
+    
     REVERSE {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
@@ -133,8 +155,8 @@ public enum Shuffles {
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
             int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen; i++) {
-                Highlights.markArray(1, i);
-                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
+                Writes.write(array, i, i, 1, true, false);
+                // fixed already shuffled inputs remain 'sorted another pattern than linear'
             }
         }
     },
@@ -499,7 +521,7 @@ public enum Shuffles {
         }
 	},
             
-	UNK {
+	SAW {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int currentLen = ArrayVisualizer.getCurrentLength();
@@ -622,7 +644,7 @@ public enum Shuffles {
 		}
 	},
 	
-	PUSH1 {
+	PUSH {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int first = ArrayVisualizer.getCurrentLength();
