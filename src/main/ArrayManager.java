@@ -37,7 +37,7 @@ final public class ArrayManager {
     private utils.Shuffles[] shuffleTypes;
     private String[] shuffleIDs = {"Unbiased Rand", "Biased Rand", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted",
     		"Smaller Runs", "\"Triangular\"", "Scrambled Head", "Perlin Noise", "Max Heapify",
-    		"Interlaced", "Poplar Heapify", "Pairwise Pass", "Bell Curve", "Sawtooth",
+    		"Interlaced", "Poplar Heapify", "B.Search Tree", "Pairwise Pass", "Bell Curve", "Sawtooth",
     		"Half Rotated", "Pipe Organ", "Scrambled Tail", "Inv. Pipe Organ", "A133058", "Push Front"};
     // if new shuffle added, add shuffle ID in appropriate position in above array (otherwise it screws)
     

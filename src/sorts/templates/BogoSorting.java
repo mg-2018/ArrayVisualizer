@@ -48,7 +48,7 @@ public abstract class BogoSorting extends Sort {
             if(Reads.compareValues(array[i], array[i + 1]) == 1) {
                 Highlights.markArray(1, i);
                 if (getRunSortName().equals("Bogosort")) Delays.sleep(0.01);
-                // slows down bogosort, bogobogosort remains no delay
+                else if (getRunSortName().equals("Bogobogosort")) Delays.sleep(0.001);
                 return false;
             }
         }

@@ -19,6 +19,7 @@ public class AndreySort extends Sort {
         this.setBogoSort(false);
     }
     
+    // this is selection sort??
     private void sort(int[] arr, int a, int b) {
         while(b > 1) {
             int k = 0;

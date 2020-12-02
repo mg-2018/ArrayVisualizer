@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import main.ArrayVisualizer;
 import sorts.exchange.CircleSort;
@@ -377,7 +377,10 @@ public enum Shuffles {
         }
 	},
             
-            /*
+	BST {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             // credit to sam walko/anon
             
             class Subarray {
@@ -404,7 +407,8 @@ public enum Shuffles {
                     q.add(new Subarray(mid+1, sub.end));
                 }
             }
-        */
+        }
+	},
             /*
             int offset = 0;
             for(int i = 0; i < 4; i++) {
