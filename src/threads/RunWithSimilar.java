@@ -36,36 +36,23 @@ final public class RunWithSimilar extends MultipleSortThread {
     
     public RunWithSimilar(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
-        this.sortCount = 11;
+        this.sortCount = 4;
         this.categoryCount = this.sortCount;
         
-        test = new BranchedPDQSort(this.arrayVisualizer);
+        test = new GrailSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
     	arrayVisualizer.setEqualItems(1);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(2);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(4);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(8);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(16);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(32);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
+    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
     	arrayVisualizer.setEqualItems(64);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(128);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
+    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
     	arrayVisualizer.setEqualItems(256);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(512);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
-    	arrayVisualizer.setEqualItems(1024);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 0.5, false);
+    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(683);
+    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(1);
     }
     
     @Override
