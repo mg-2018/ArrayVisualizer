@@ -3,7 +3,7 @@ package sorts.custom;
 import main.ArrayVisualizer;
 import sorts.templates.Sort;
 
-// Grate Sort by lancewer (logan)
+// Grate Sort by lancewer (logan aka luna)
 // variable name after original scratch project
 
 final public class GrateSort extends Sort {
