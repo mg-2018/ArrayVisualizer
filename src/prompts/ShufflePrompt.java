@@ -144,7 +144,7 @@ final public class ShufflePrompt extends javax.swing.JFrame implements AppFrame 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) throws Exception {//GEN-FIRST:event_jList1ValueChanged
         // if new shuffle added, increase value of n in "selection <= n" statement
         int selection = jList1.getSelectedIndex();
-        if(selection >= 0 && selection <= 22)
+        if(selection >= 0 && selection <= 23)
         	ArrayManager.setShuffle(ArrayManager.getShuffles()[selection]);
         
         UtilFrame.jButton6ResetText();

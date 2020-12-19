@@ -648,6 +648,38 @@ public enum Shuffles {
 		}
 	},
 	
+	UNK {
+		@Override
+		public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+			int currentLen = ArrayVisualizer.getCurrentLength();
+			
+			final int middle = currentLen/2;
+			
+			int staircase = 0;
+			int step = 2;
+			int left = 0;
+			int right = middle;
+			
+			for(int i=0; i<currentLen; i++) {
+				if(i%2 == 0) {
+					Writes.write(array, left, i, 1, true, false);
+					left += step;
+					
+					if(left >= middle) {
+						staircase++;
+						left = ((int) Math.pow(2, staircase)) - 1;
+						step *= 2;
+					}
+				}
+				
+				else {
+					Writes.write(array, right, i, 1, true, false);
+					right++;
+				}
+			}
+		}
+	},
+	
 	PUSH {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
