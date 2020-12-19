@@ -7,6 +7,7 @@
 ant
 java -cp bin;lib/classgraph-4.8.47.jar main.ArrayVisualizer
 ```
+NOTE: after bin, use ;(semicolon) in windows and :(colon) in Mac/Linux
 
 - Method 2: if method 1 doesn't work, simply import this project in Eclipse IDE for Java and run ArrayVisualizer.java
 
