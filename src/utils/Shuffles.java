@@ -540,6 +540,22 @@ public enum Shuffles {
             }
         }
 	},
+	
+	REVSAW {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
+            int offset = 0;
+            for(int i = 0; i < 4; i++) {
+                int value = currentLen-4;
+                for(int j = offset; j < offset + (currentLen / 4); j++) {
+                    Writes.write(array, j, value, 1, true, false);
+                    value -= 4;
+                }
+                offset += (currentLen / 4);
+            }
+        }
+	},
             
 	ROTATE {
         @Override

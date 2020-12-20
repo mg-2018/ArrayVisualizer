@@ -8,7 +8,7 @@ final public class BoseNelson extends Sort {
 	{
 		super(arrayVisualizer);
 		
-		this.setSortListName("Bose-Nelson");
+		this.setSortListName("Rec. Bose-Nelson");
         this.setRunAllSortsName("Bose-Nelson Sorting Network");
         this.setRunSortName("Bose-Nelson Sorting Network");
         this.setCategory("Concurrent Sorts");

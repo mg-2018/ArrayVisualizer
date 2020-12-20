@@ -69,7 +69,7 @@ Currently 79 sorts are in "Run All Sorts" queue
 - Iterative / Recursive Bitonic Sort
 - Iterative / Recursive Odd-Even Merge Sort
 - Iterative / Recursive Pairwise Sorting Network
-- "Bose-Nelson Sorting Network" (recursive)
+- "Bose-Nelson Sorting Network" (iterative / recursive)
 
 ### Hybrid Sorts
 - "Hybrid Comb Sort"

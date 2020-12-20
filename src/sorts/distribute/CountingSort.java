@@ -32,7 +32,7 @@ SOFTWARE.
  */
 
 final public class CountingSort extends Sort {
-    public CountingSort(ArrayVisualizer arrayVisualizer) {
+	public CountingSort(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
         
         this.setSortListName("Counting");
@@ -49,30 +49,35 @@ final public class CountingSort extends Sort {
 
     @Override
     public void runSort(int[] array, int sortLength, int bucketCount) throws Exception {
-        int max = Reads.analyzeMax(array, sortLength, 0, false);
+        int min = array[0];
+        int max = array[0];
+        int finalpass = 0;
         
-        int[] output = Arrays.copyOf(array, sortLength);
-        int[] counts = new int[max + 1];
+        arrayVisualizer.toggleAnalysis(true);
+        for(int i=0; i<sortLength; i++) {
+        	if(min > array[i]) min = array[i];
+        	if(max < array[i]) max = array[i];
+        	Highlights.markArray(1, i);
+        	Delays.sleep(1);
+        }
+        arrayVisualizer.toggleAnalysis(false);
         
-        for (int i = 0; i < sortLength; i++) { 
-            Writes.write(counts, array[i], counts[array[i]] + 1, 1, false, true);
-            Highlights.markArray(1, i);
-        } 
-  
-        for (int i = 1; i < counts.length; i++) { 
-            Writes.write(counts, i, counts[i] + counts[i - 1], 1, true, true);
-        } 
-  
-        for (int i = sortLength - 1; i >= 0; i--) {
-            output[counts[array[i]] - 1] = array[i];
-            counts[array[i]]--;
+        int[] counts = new int[max-min+1];
+        
+        for(int i=0; i<sortLength; i++)
+        {
+        	Writes.write(counts, array[i]-min, counts[array[i]-min]+1, 1, false, true);
+        	Highlights.markArray(1, i);
         }
         
-        // Extra loop to simulate the results from the "output" array being written
-        // to the visual array.
-        for (int i = sortLength - 1; i >= 0; i--) {
-            Writes.write(array, i, output[i], 1, true, false);
-            Writes.changeAuxWrites(1);
+        for(int i=0; i<max-min+1; i++)
+        {
+        	while(counts[i] != 0)
+        	{
+        		Writes.write(array, finalpass++, i+min, 1, true, false);
+        		counts[i]--;
+        		Writes.changeAuxWrites(1);
+        	}
         }
     }
 }
