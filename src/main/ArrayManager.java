@@ -35,10 +35,10 @@ SOFTWARE.
 final public class ArrayManager {
     private int[] presortedArray;
     private utils.Shuffles[] shuffleTypes;
-    private String[] shuffleIDs = {"Unbiased Rand", "Biased Rand", "Backwards", "Few Unique", "Almost Sorted", "Already Sorted",
-    		"Smaller Runs", "\"Triangular\"", "Scrambled Head", "Perlin Noise", "Max Heapify",
-    		"Interlaced", "Poplar Heapify", "B.Search Tree", "Pairwise Pass", "Bell Curve", "Sawtooth", "Rev Sawtooth",
-    		"Half Rotated", "Pipe Organ", "Scrambled Tail", "Inv. Pipe Organ", "A133058", "Unknown", "Push Front"};
+    private String[] shuffleIDs = {"Random", "Bias Rand", "Descending", "Few Unique", "Less Rand", "Ascending",
+    		"Log2 Runs", "\"Triangular\"", "Scr. Head", "Perlin Noise", "Perlin Curve", "Max Heapify",
+    		"Interlace", "Poplar Heapify", "BST", "Pairwise Pass", "Bell Curve", "Sawtooth", "Rev. Saw",
+    		"Half Rotated", "Pipe Organ", "Scr. Tail", "Inv. PO", "A133058", "Qsort Killer", "Push Front"};
     // if new shuffle added, add shuffle ID in appropriate position in above array (otherwise it screws)
     
     private volatile boolean MUTABLE;

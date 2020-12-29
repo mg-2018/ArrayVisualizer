@@ -132,7 +132,7 @@ public enum Shuffles {
             
             for(int i = 0; i < Math.max(currentLen / 20, 1); i++){
                 Writes.swap(array, (int)(Math.random()*currentLen), (int)(Math.random()*currentLen), 0, true, false);
-                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(2);
+                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(10);
             }
             
             /*
@@ -333,13 +333,16 @@ public enum Shuffles {
         }
     },
     
-            /*
+    PERLIN2 {
+        @Override
+        public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
+        	int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen; i++) {
                 int value = 0 - (int) (PerlinNoise.returnNoise((float) i / currentLen) * currentLen);
                 Writes.write(array, i, value, 1, true, false);
             }
         }
-        */
+    },
 
     HEAPIFY {
             @Override
@@ -356,7 +359,7 @@ public enum Shuffles {
             	int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen / 2; i += 2) {
                 Writes.swap(array, i, currentLen - i - 1, 0, true, false);
-                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(1);
+                if(ArrayVisualizer.shuffleEnabled()) Delays.sleep(2);
             }
         }
     },
@@ -571,7 +574,7 @@ public enum Shuffles {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int currentLen = ArrayVisualizer.getCurrentLength();
-            int value = 1;
+            int value = 0;
             for(int i = 0; i < currentLen / 2; i++) {
                 Writes.write(array, i, value, 1, true, false);
                 value += 2;
@@ -664,7 +667,7 @@ public enum Shuffles {
 		}
 	},
 	
-	UNK {
+	QSORTBAD {
 		@Override
 		public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
 			int currentLen = ArrayVisualizer.getCurrentLength();

@@ -11,8 +11,8 @@ final public class ShellSort2 extends Sort {
 		super(arrayVisualizer);
         
         this.setSortListName("Shell 2");
-        this.setRunAllSortsName("Original Shell Sort's Concept");
-        this.setRunSortName("Original Shell Sort's Concept");
+        this.setRunAllSortsName("Shell Sort");
+        this.setRunSortName("Shell Sort");
         this.setCategory("Insertion Sorts");
         this.setComparisonBased(true);
         this.setBucketSort(false);
@@ -24,39 +24,36 @@ final public class ShellSort2 extends Sort {
 	
 	@Override
 	public void runSort(int[] array, int length, int base) {
-		int gap, gapcount = 0;
 		int j, k, temp;
-		int[] gapseq = {17962, 7983, 3548, 1577, 701, 301, 132, 57, 23, 10, 4, 1, 0};
-		// extended ciura gap within 32768, 0 in the end to prevent out of bounds exception
+		int gapseq = length;
 		
 		while(true) {
-			gap = gapseq[gapcount];
-			if(gap > length) {
-				gapcount++;
+			gapseq /= 2;
+			// back to original shell's method
+			if(gapseq > length) {
 				continue;
 			}
 			
-			else if(gap == 0) break;
+			else if(gapseq == 0) break;
 			
 			else {
-				for(int i=gap; i<(2*gap); i++) {
+				for(int i=gapseq; i<(2*gapseq); i++) {
 					j = i;
 					while(j < length) {
 						k = j;
 						temp = array[k];
-						while(k-gap >= 0) {
-							if(Reads.compareValues(array[k-gap], temp) > 0) {
-								Writes.write(array, k, array[k-gap], 1, true, false);
-								k -= gap;
+						while(k-gapseq >= 0) {
+							if(Reads.compareValues(array[k-gapseq], temp) > 0) {
+								Writes.write(array, k, array[k-gapseq], 1, true, false);
+								k -= gapseq;
 							}
 							
 							else break;
 						}
 						Writes.write(array, k, temp, 1, true, false);
-						j += gap;
+						j += gapseq;
 					}
 				}
-				gapcount++;
 			}
 		}
 	}

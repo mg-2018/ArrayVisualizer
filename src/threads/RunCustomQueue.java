@@ -31,27 +31,41 @@ SOFTWARE.
  *
  */
 
-final public class RunWithSimilar extends MultipleSortThread {
+final public class RunCustomQueue extends MultipleSortThread {
     private Sort test;
     
-    public RunWithSimilar(ArrayVisualizer arrayVisualizer) {
+    public RunCustomQueue(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
-        this.sortCount = 4;
+        this.sortCount = 11;
         this.categoryCount = this.sortCount;
         
-        test = new GrailSort(this.arrayVisualizer);
+        test = new WikiSort(this.arrayVisualizer);
     }
 
     @Override
     protected synchronized void executeSortList(int[] array) throws Exception {
     	arrayVisualizer.setEqualItems(1);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(2);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(4);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(8);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(16);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(32);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
     	arrayVisualizer.setEqualItems(64);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(128);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
     	arrayVisualizer.setEqualItems(256);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
-    	arrayVisualizer.setEqualItems(683);
-    	RunWithSimilar.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(512);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
+    	arrayVisualizer.setEqualItems(1024);
+    	RunCustomQueue.this.runIndividualSort(test, 0, array, 2048, 1, false);
     	arrayVisualizer.setEqualItems(1);
     }
     
@@ -66,18 +80,18 @@ final public class RunWithSimilar extends MultipleSortThread {
             public void run() {
                 try{
                     if(runAllActive) {
-                    	RunWithSimilar.this.sortNumber = current;
-                    	RunWithSimilar.this.sortCount = total;
+                    	RunCustomQueue.this.sortNumber = current;
+                    	RunCustomQueue.this.sortCount = total;
                     }
                     else {
-                    	RunWithSimilar.this.sortNumber = 1;
+                    	RunCustomQueue.this.sortNumber = 1;
                     }
 
                     arrayManager.toggleMutableLength(false);
 
                     arrayVisualizer.setCategory("Sorts running with similar items");
 
-                    RunWithSimilar.this.executeSortList(array);
+                    RunCustomQueue.this.executeSortList(array);
                     
                     if(!runAllActive) {
                         arrayVisualizer.setCategory("Run Sorts");

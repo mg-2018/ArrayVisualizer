@@ -39,6 +39,7 @@ final public class TimeSort extends Sort {
     private InsertionSort insertSorter;
     
     private volatile int next = 0;
+    private int MAG;
     
     public TimeSort(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);
@@ -64,6 +65,8 @@ final public class TimeSort extends Sort {
     @Override
     public void runSort(int[] array, int sortLength, int magnitude) throws Exception {
         insertSorter = new InsertionSort(this.arrayVisualizer);
+        MAG = magnitude;
+        this.setRunAllSortsName("Time + Insertion Sort (Mul " + MAG + ")");
         
         final int A = magnitude;
         next = 0;

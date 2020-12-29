@@ -47,7 +47,7 @@ final public class RunAllSorts {
         this.allSortThreads.add(new RunHybridSorts(arrayVisualizer));
         this.allSortThreads.add(new RunMiscellaneousSorts(arrayVisualizer));
         this.allSortThreads.add(new RunImpracticalSorts(arrayVisualizer));
-        //this.allSortThreads.add(new RunWithSimilar(arrayVisualizer));
+        this.allSortThreads.add(new RunCustomQueue(arrayVisualizer));
     }
 
     public void reportAllSorts(int[] array) {
