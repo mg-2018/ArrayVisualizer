@@ -1,6 +1,9 @@
 package sorts.custom;
 
 import main.ArrayVisualizer;
+
+// snuffle sort by _fluffy
+
 import sorts.templates.Sort;
 
 import java.lang.Math;

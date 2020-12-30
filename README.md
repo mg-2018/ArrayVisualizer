@@ -20,10 +20,17 @@ NOTE: after bin, use ;(semicolon) in windows and :(colon) in Mac/Linux
 - Sort up to 32768 (2^15) items!
 - ...and lots of more!
 
-## Sorts List (2020/12/19)
-Currently 79 sorts are in "Run All Sorts" queue
+## About *Holy Grail Sort*
+Currently this is mock algorithm of Grail Sort, but its project is working in progress!!
+More discussion is going in this discord server: https://discord.com/invite/2xGkKC2
+(Feel free to visit here; this server is not only for holygrail project, but also for free subjects!)
 
-### Exchange Sorts
+## **Official** Sorts List
+Currently 79 sorts are in "Run All Sorts" queue
+This list includes all sorts were already in arrayV v3.5
+Sorts added later than v3.5 is listed in CUSTOM.md
+
+### Exchange Sorts (14)
 - Bubble / Optimized Bubble Sort
 - Cocktail Shaker / Optimized Cocktail Shaker Sort
 - Odd-Even Sort
@@ -32,7 +39,7 @@ Currently 79 sorts are in "Run All Sorts" queue
 - Circle Sort
 - LL / LR / Dual-Pivot / Stable Quick Sort
 
-### Selection Sorts
+### Selection Sorts (12)
 - Selection / Double Selection Sort
 - Cycle Sort
 - Max / Min / Flipped Min / Weak / Ternary Heap Sort
@@ -40,21 +47,20 @@ Currently 79 sorts are in "Run All Sorts" queue
 - Tournament Sort
 - Pancake Sorting (this is classified as 'Miscellaneous Sort' when running all sorts)
 
-### Insertion Sorts
+### Insertion Sorts (5)
 - Insertion / Binary Insertion Sort
-- Shell Sort (this has two different version)
+- Shell Sort
 - Patience Sort
 - (Unbalanced) Tree Sort
 
-### Merge Sorts
+### Merge Sorts (5)
 - Merge Sort (out-of-place)
 - Bottom-Up Merge Sort
 - In-Place Merge Sort
 - Lazy Stable Sort
 - Rotate Merge Sort (in-place)
-- "Andrey Astrelin's In-Place Merge Sort"
 
-### Distribution Sorts
+### Distribution Sorts (13)
 - Counting / Pigeonhole Sort (currently the fastest **distributive sort**)
 - Gravity(Bead) Sort
 - American Flag Sort
@@ -65,39 +71,37 @@ Currently 79 sorts are in "Run All Sorts" queue
 - Simple Shatter Sort
 - Time Sort
 
-### Concurrent Sorts
+### Concurrent Sorts (6)
 - Iterative / Recursive Bitonic Sort
 - Iterative / Recursive Odd-Even Merge Sort
 - Iterative / Recursive Pairwise Sorting Network
-- "Bose-Nelson Sorting Network" (iterative / recursive)
 
-### Hybrid Sorts
-- "Hybrid Comb Sort"
-- "Introspective Circle Sort"
+### Hybrid Sorts (14)
+- Hybrid Comb Sort
+- Introspective Circle Sort
 - Binary Merge Sort
 - Weave Merge Sort (aka Merge-Insertion Sort)
 - Tim Sort
-- "Cocktail Merge Sort"
+- Cocktail Merge Sort
 - Wiki / Grail / Sqrt Sort (block merge sorts!)
 - Introspective Sort [std::sort]
 - Optimized Bottom-Up Merge Sort [std::stable_sort]
 - Optimized Dual-Pivot Quick Sort [Arrays.sort]
 - Branched / Branchless Pattern Defeating Quick Sort (currently the fastest **comparative sort**)
-- "Kota / Ecta Sort"
 
-### *Impractical* Sorts
+### *Impractical* Sorts (10)
 NOTE: Beware; even in a high speed, some of these sorts may not finish in reasonable time
+Try these in less than item count inside parentheses
 
-- Bad Sort
-- Stooge Sort
-- Silly / Slow Sort
-- Various "Bogo Sorts" (try these in less than 64 items please)
-
-### Custom Sorts
-These sorts are in sorts.custom package, check the custom added sorts in commit section!
+- Bad Sort (2048)
+- Stooge Sort (1024)
+- Silly / Slow Sort (256)
+- Exchange Bogo / Bubble Bogo Sort (512)
+- Less Bogo / Cocktail Bogo Sort (512)
+- Bogo Sort (10)
+- Bogo Bogo Sort (6)
 
 ## About
 - Original project by: w0rthy
 - Revamped by: MusicTheorist
 - Re-Revamped by: mg-2018
-- and check out this discord server: https://discord.com/invite/2xGkKC2

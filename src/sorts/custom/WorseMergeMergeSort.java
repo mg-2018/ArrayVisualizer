@@ -32,7 +32,7 @@ final public class WorseMergeMergeSort extends Sort {
         this.setBucketSort(false);
         this.setRadixSort(false);
         this.setUnreasonablySlow(true);
-        this.setUnreasonableLimit(64);
+        this.setUnreasonableLimit(16);
         this.setBogoSort(false);
     }
     

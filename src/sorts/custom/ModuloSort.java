@@ -1,6 +1,9 @@
 package sorts.custom;
 
 import main.ArrayVisualizer;
+
+// Modulo Sort by McDude_73
+
 import sorts.templates.Sort;
 
 final public class ModuloSort extends Sort {

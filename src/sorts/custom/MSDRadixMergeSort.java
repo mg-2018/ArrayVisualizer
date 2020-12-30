@@ -1,6 +1,9 @@
 package sorts.custom;
 
 import main.ArrayVisualizer;
+
+// MSD Radix Merge Sort by _fluffy
+
 import sorts.templates.Sort;
 
 final public class MSDRadixMergeSort extends Sort {

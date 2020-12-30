@@ -4,7 +4,6 @@ import main.ArrayVisualizer;
 import sorts.templates.Sort;
 
 // this version of shell sort is w0rthy's original implementation
-// I think this is shell sort's original concept to be fair
 
 final public class ShellSort2 extends Sort {
 	public ShellSort2(ArrayVisualizer arrayVisualizer) {

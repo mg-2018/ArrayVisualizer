@@ -3,7 +3,7 @@ package sorts.custom;
 import main.ArrayVisualizer;
 import sorts.templates.Sort;
 
-// Float Sort by lancewer (logan)
+// Float Sort by Lancewer
 // variable name after original scratch project
 
 final public class FloatSort extends Sort {

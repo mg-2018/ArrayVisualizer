@@ -89,7 +89,7 @@ final public class RunCustomQueue extends MultipleSortThread {
 
                     arrayManager.toggleMutableLength(false);
 
-                    arrayVisualizer.setCategory("Sorts running with similar items");
+                    arrayVisualizer.setCategory("Custom Queue");
 
                     RunCustomQueue.this.executeSortList(array);
                     
