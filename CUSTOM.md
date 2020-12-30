@@ -35,6 +35,7 @@ All of these sort's credit is included in these sort's source code
 
 ## *Impractical* Sorts
 NOTE: Beware; even in a high speed, some of these sorts may not finish in reasonable time
+
 Try these in less than item count inside parentheses
 
 - Grate Sort (512)

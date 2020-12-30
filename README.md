@@ -22,12 +22,16 @@ NOTE: after bin, use ;(semicolon) in windows and :(colon) in Mac/Linux
 
 ## About *Holy Grail Sort*
 Currently this is mock algorithm of Grail Sort, but its project is working in progress!!
+
 More discussion is going in this discord server: https://discord.com/invite/2xGkKC2
+
 (Feel free to visit here; this server is not only for holygrail project, but also for free subjects!)
 
 ## **Official** Sorts List
 Currently 79 sorts are in "Run All Sorts" queue
+
 This list includes all sorts were already in arrayV v3.5
+
 Sorts added later than v3.5 is listed in CUSTOM.md
 
 ### Exchange Sorts (14)
@@ -91,6 +95,7 @@ Sorts added later than v3.5 is listed in CUSTOM.md
 
 ### *Impractical* Sorts (10)
 NOTE: Beware; even in a high speed, some of these sorts may not finish in reasonable time
+
 Try these in less than item count inside parentheses
 
 - Bad Sort (2048)
