@@ -10,6 +10,7 @@ All of these sort's credit is included in these sort's source code
 ## Selection Sorts
 - Less Pancake Sort
 - *Another* Selection Sort (continuously swap)
+- Cocktail Pancake Sort
 
 ## Insertion Sorts
 - *Another* Shell Sort

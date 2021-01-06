@@ -155,8 +155,10 @@ public enum Shuffles {
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
             int currentLen = ArrayVisualizer.getCurrentLength();
             for(int i = 0; i < currentLen; i++) {
-                Writes.write(array, i, i, 1, true, false);
-                // fixed already shuffled inputs remain 'sorted another pattern than linear'
+                Highlights.markArray(1, i);
+                Delays.sleep(1);
+                
+                // fixed already shuffled method to preserve unique items count
             }
         }
     },

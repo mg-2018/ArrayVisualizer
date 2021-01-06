@@ -102,7 +102,7 @@ final public class ArrayManager {
     }
     
     public void shuffleArray(int[] array, int currentLen, ArrayVisualizer ArrayVisualizer) {
-        if(Shuffles != Shuffles.ALREADY) this.initializeArray(array);
+        this.initializeArray(array);
 
         String tmp = ArrayVisualizer.getHeading();
         ArrayVisualizer.setHeading("Shuffling...");

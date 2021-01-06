@@ -1,15 +1,7 @@
 # w0rthy's Array Visualizer, Re-Revamped
 
 ## How to run this program
-- Method 1: run this batch in dist folder:
-
-```
-ant
-java -cp bin;lib/classgraph-4.8.47.jar main.ArrayVisualizer
-```
-NOTE: after bin, use ;(semicolon) in windows and :(colon) in Mac/Linux
-
-- Method 2: if method 1 doesn't work, simply import this project in Eclipse IDE for Java and run ArrayVisualizer.java
+Simply import this project in Eclipse IDE for Java and run ArrayVisualizer.java
 
 ## Features
 - Visualize over 90 algorithms with 12 different visual style
