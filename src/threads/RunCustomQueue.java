@@ -39,7 +39,7 @@ final public class RunCustomQueue extends MultipleSortThread {
         this.sortCount = 11;
         this.categoryCount = this.sortCount;
         
-        test = new WikiSort(this.arrayVisualizer);
+        test = new IntroSort(this.arrayVisualizer);
     }
 
     @Override

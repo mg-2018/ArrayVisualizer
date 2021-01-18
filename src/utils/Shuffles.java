@@ -534,15 +534,26 @@ public enum Shuffles {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int currentLen = ArrayVisualizer.getCurrentLength();
-            int offset = 0;
-            for(int i = 0; i < 4; i++) {
-                int value = 0;
-                for(int j = offset; j < offset + (currentLen / 4); j++) {
-                    Writes.write(array, j, value, 1, true, false);
-                    value += 4;
-                }
-                offset += (currentLen / 4);
-            }
+        	int[] offset = new int[5];
+        	int[] aux = new int[currentLen];
+        	
+        	for(int i=1; i<=4; i++)
+        		offset[i] = currentLen / 4;
+        	
+        	for(int i=1; i<=currentLen%4; i++)
+        		offset[i]++;
+        	
+        	for(int i=1; i<=4; i++)
+        		offset[i] += offset[i-1];
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		Writes.write(aux, offset[i%4], array[i], 1, true, true);
+        		offset[i%4]++;
+        	}
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		Writes.write(array, i, aux[i], 1, true, false);
+        	}
         }
 	},
 	
@@ -550,15 +561,28 @@ public enum Shuffles {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int currentLen = ArrayVisualizer.getCurrentLength();
-            int offset = 0;
-            for(int i = 0; i < 4; i++) {
-                int value = currentLen-4;
-                for(int j = offset; j < offset + (currentLen / 4); j++) {
-                    Writes.write(array, j, value, 1, true, false);
-                    value -= 4;
-                }
-                offset += (currentLen / 4);
-            }
+        	int[] offset = new int[5];
+        	int[] aux = new int[currentLen];
+        	
+        	for(int i=1; i<=4; i++)
+        		offset[i] = currentLen / 4;
+        	
+        	for(int i=1; i<=currentLen%4; i++)
+        		offset[i]++;
+        	
+        	for(int i=1; i<=4; i++)
+        		offset[i] += offset[i-1];
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		Writes.write(aux, offset[i%4], array[i], 1, true, true);
+        		offset[i%4]++;
+        	}
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		Writes.write(array, i, aux[i], 1, true, false);
+        	}
+        	
+        	Writes.reversal(array, 0, currentLen, 1, true, false);
         }
 	},
             
@@ -576,15 +600,25 @@ public enum Shuffles {
         @Override
         public void shuffleArray(int[] array, ArrayVisualizer ArrayVisualizer, Delays Delays, Highlights Highlights, Writes Writes) {
         	int currentLen = ArrayVisualizer.getCurrentLength();
-            int value = 0;
-            for(int i = 0; i < currentLen / 2; i++) {
-                Writes.write(array, i, value, 1, true, false);
-                value += 2;
-            }
-            for(int i = currentLen / 2; i < currentLen; i++) {
-                Writes.write(array, i, value, 1, true, false);
-                value -= 2;
-            }
+        	int[] offset = new int[2];
+        	int[] aux = new int[currentLen];
+        	
+        	offset[0] = 0;
+        	offset[1] = currentLen%2 == 1 ? currentLen/2 + 1 : currentLen/2;
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		if(i%2 == 0)
+        			Writes.write(aux, offset[i%2], array[i], 1, true, true);
+        		
+        		else
+        			Writes.write(aux, offset[i%2], array[currentLen-1 - i], 1, true, true);
+        		
+        		offset[i%2]++;
+        	}
+        	
+        	for(int i=0; i<currentLen; i++) {
+        		Writes.write(array, i, aux[i], 1, true, false);
+        	}
         }
 	},
 	
