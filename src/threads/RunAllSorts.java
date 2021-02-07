@@ -38,7 +38,7 @@ final public class RunAllSorts {
     public RunAllSorts(ArrayVisualizer arrayVisualizer) {
         this.arrayVisualizer = arrayVisualizer;
         this.allSortThreads = new ArrayList<>();
-        /*
+        
         this.allSortThreads.add(new RunExchangeSorts(arrayVisualizer));
         this.allSortThreads.add(new RunSelectionSorts(arrayVisualizer));
         this.allSortThreads.add(new RunInsertionSorts(arrayVisualizer));
@@ -48,8 +48,8 @@ final public class RunAllSorts {
         this.allSortThreads.add(new RunHybridSorts(arrayVisualizer));
         this.allSortThreads.add(new RunMiscellaneousSorts(arrayVisualizer));
         this.allSortThreads.add(new RunImpracticalSorts(arrayVisualizer));
-        */
-        this.allSortThreads.add(new RunCustomQueue(arrayVisualizer));
+        
+        // this.allSortThreads.add(new RunCustomQueue(arrayVisualizer));
     }
 
     public void reportAllSorts(int[] array) {
