@@ -23,13 +23,16 @@ final public class ShellSort2 extends Sort {
 	
 	@Override
 	public void runSort(int[] array, int length, int base) {
+		int num=0;
 		int j, k, temp;
-		int gapseq = length;
+		int[] gap = {17961, 7983, 3548, 1577, 701, 301, 132, 57, 23, 10, 4, 1, 0};
+		int gapseq;
 		
 		while(true) {
-			gapseq /= 2;
-			// back to original shell's method
+			gapseq = gap[num];
+			
 			if(gapseq > length) {
+				num++;
 				continue;
 			}
 			
@@ -53,6 +56,8 @@ final public class ShellSort2 extends Sort {
 						j += gapseq;
 					}
 				}
+				
+				num++;
 			}
 		}
 	}

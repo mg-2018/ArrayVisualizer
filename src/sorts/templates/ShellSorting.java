@@ -20,8 +20,9 @@ public abstract class ShellSorting extends Sort {
     final protected int[] OddEvenSedgewickGaps = {3905, 2161, 929, 505, 209, 109, 41, 19, 5, 1};
     final protected int[] GonnetBaezaYatesGaps = {1861, 846, 384, 174, 79, 36, 16, 7, 3, 1};
     final protected int[] TokudaGaps           = {2660, 1182, 525, 233, 103, 46, 20, 9, 4, 1};
-    final protected int[] CiuraGaps            = {1750, 701, 301, 132, 57, 23, 10, 4, 1};
-    final protected int[] ExtendedCiuraGaps    = {8861, 3938, 1750, 701, 301, 132, 57, 23, 10, 4, 1};
+    final protected int[] CiuraGaps            = {701, 301, 132, 57, 23, 10, 4, 1};
+    final protected int[] ExtendedCiuraGaps    = {17961, 7983, 3548, 1577, 701, 301, 132, 57, 23, 10, 4, 1};
+    // currently extended ciura gaps is the only used gap sequence, i don't know why :(
 
     protected ShellSorting(ArrayVisualizer arrayVisualizer) {
         super(arrayVisualizer);

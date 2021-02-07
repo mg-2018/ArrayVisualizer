@@ -6,7 +6,7 @@ import resources.Fetcher;
 
 final public class SFXFetcher extends Fetcher {
     public SFXFetcher() {
-        super("32MbGMStereo.sf2");
+        super("sfx.sf2");
     }
     
     public SFXFetcher(File file) {
